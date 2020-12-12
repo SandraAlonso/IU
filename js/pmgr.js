@@ -677,30 +677,24 @@ $(function() {
 
             $('.tablitaImpresora').hide();
             $('#dropdownBuscableImpresora').hover(function() {
-                if($('.barraImpresora').val())
-                    $('.tablitaImpresora').show();
+                $('*').click(function(){$('.tablitaImpresora').show();})    
             }, function() {
-                if(!$('.barraImpresora').val())
-                    $('.tablitaImpresora').hide();
-            });
+                $('*').click(function(){$('.tablitaImpresora').hide();})
+            });       
 
             $('.tablitaGrupo').hide();
             $('#dropdownBuscableGrupo').hover(function() {
-                if($('.barraGrupo').val())
-                    $('.tablitaGrupo').show();
+                $('*').click(function(){$('.tablitaGrupo').show();})   
             }, function() {
-                if(!$('.barraGrupo').val())
-                    $('.tablitaGrupo').hide();
-            });
+                $('*').click(function(){$('.tablitaGrupo').hide();})
+            });  
 
             $('.tablitaJob').hide();
             $('#dropdownBuscableJob').hover(function() {
-                if($('.barraJob').val())
-                    $('.tablitaJob').show();
+                $('*').click(function(){$('.tablitaJob').show();})                  
             }, function() {
-                if(!$('.barraJob').val())
-                    $('.tablitaJob').hide();
-            });
+                $('*').click(function(){$('.tablitaJob').hide();})
+            });  
 
             activaBusquedaDropdown($('#dropdownBuscableImpresora'),
                 (select) => Pmgr.globalState.printers.forEach(m =>
