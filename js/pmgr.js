@@ -576,17 +576,17 @@ function activaBusquedaDropdown(div, actualizaElementos) {
     let search = $(div).find('input[type=search]');
     let select = $(div).find('select');
     console.log(search, select);
-
     // vacia el select, lo llena con impresoras validas
     // FALTA: poner como marcadas las que ya estaban seleccionadas de antes
     select.empty();
     actualizaElementos(select);
 
-
-
     // filtrado dinámico
     $(search).on('input', () => {
         let w = $(search).val().trim().toLowerCase();
+        if(w)
+            select.show();
+        
         let items = $(select).find("option");
         console.log(items);
         items.each((i, o) =>
@@ -676,11 +676,31 @@ $(function() {
             update();
 
             $('.tablitaImpresora').hide();
-            $('#dropdownBuscableImpresora').focus(function() { $('.tablitaImpresora').show() });
+            $('#dropdownBuscableImpresora').hover(function() {
+                if($('.barraImpresora').val())
+                    $('.tablitaImpresora').show();
+            }, function() {
+                if(!$('.barraImpresora').val())
+                    $('.tablitaImpresora').hide();
+            });
+
             $('.tablitaGrupo').hide();
-            $('#dropdownBuscableGrupo').focus(function() { $('.tablitaGrupo').show() });
+            $('#dropdownBuscableGrupo').hover(function() {
+                if($('.barraGrupo').val())
+                    $('.tablitaGrupo').show();
+            }, function() {
+                if(!$('.barraGrupo').val())
+                    $('.tablitaGrupo').hide();
+            });
+
             $('.tablitaJob').hide();
-            $('#dropdownBuscableJob').focus(function() { $('.tablitaJob').show() });
+            $('#dropdownBuscableJob').hover(function() {
+                if($('.barraJob').val())
+                    $('.tablitaJob').show();
+            }, function() {
+                if(!$('.barraJob').val())
+                    $('.tablitaJob').hide();
+            });
 
             activaBusquedaDropdown($('#dropdownBuscableImpresora'),
                 (select) => Pmgr.globalState.printers.forEach(m =>
