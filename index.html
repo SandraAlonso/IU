@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <title>Grupo 7</title>
+</head>
+
+<body>
+    <!--Barra de navegación-->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Impresoras</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="grupos-tab" data-toggle="tab" href="#grupos" role="tab" aria-controls="grupos" aria-selected="false">Grupos de impresoras</a>
+        </li>
+
+    </ul>
+    <!--Tabla de impresoras-->
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row justify-content-center">
+                <div class="col-4 job">
+                    <div id="dropdownBuscableJob">
+
+                        <div class="row-md-4">
+                            <h6 class="tituloBuscador">Buscar trabajo de impresión</h6>
+                            <input type="search" class="barra form-control" placeholder="Nombre de trabajo" />
+                        </div>
+                        <div class="row-md-4">
+                            <select class="tablitaJob multiple form-control" multiple size="6">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div id="dropdownBuscableImpresora">
+
+                        <div class="row-md-4">
+                            <h6 class="tituloBuscador">Buscar impresora</h6>
+                            <input type="search" class="barra form-control" placeholder="Nombre de impresora" />
+                        </div>
+                        <div class="row-md-4">
+                            <select class="tablitaImpresora multiple form-control" multiple size="6">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <table class="table">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col" class="campo">Alias <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Estado <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Modelo <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Localización <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">IP <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Papel <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Tinta <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Trabajos <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Opciones </th>
+                    </tr>
+                </thead>
+                <tbody id="impresoras">
+
+                </tbody>
+
+            </table>
+
+            <!--boton anadir impresora-->
+            <div data-toggle="tooltip" data-placement="top" title="Añadir impresora" id="divAnadirImp">
+                <button id="anadir" data-toggle="modal" data-target="#addPrinter" class="btn btn-outline-primary anadirImpresora">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-align-middle" fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M6 13a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v10zM1 8a.5.5 0 0 0 .5.5H6v-1H1.5A.5.5 0 0 0 1 8zm14 0a.5.5 0 0 1-.5.5H10v-1h4.5a.5.5 0 0 1 .5.5z" />
+                    </svg>
+                </button>
+            </div>
+            <!--boton anadir trabajo de impresión-->
+            <div data-toggle="tooltip" data-placement="top" title="Añadir trabajo de impresión" id="divAnadirTrabajo">
+                <button id="editar" data-toggle="modal" data-target="#addPrinterWork" class="btn btn-outline-primary anadirTrabajo">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus"
+                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 0h5.5v1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h1V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z" />
+                        <path d="M9.5 3V0L14 4.5h-3A1.5 1.5 0 0 1 9.5 3z" />
+                        <path fill-rule="evenodd"
+                            d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+
+        <!--DIALOGOS-->
+        <!--Modal de las impresoras que pertenecen a un grupo-->
+        <div id="dialogosMostrarGrupoImpresora"></div>
+
+        <!--Modal anadir trabajo de impresión-->
+        <div class="modal fade" id="addPrinterWork" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Añadir trabajo de impresión</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Elige un archivo PDF</label>
+                            </div>
+                            <br>
+                            <p><br>Enviar a:</p>
+                            <div class="form-check" id="seleccionarGrupoEImpresoraParaTrabajo">
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Crear trabajo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Modal editar impresora-->
+        <div id="dialogosEditarImpresora"></div>
+        <!--Modal eliminar impresora-->
+        <div id="dialogosBorrarImpresora"></div>
+        <!--Modal eliminar grupo de impresoras-->
+        <div id="dialogosBorrarGrupoImpresora"></div>
+
+        <!--Modal eliminar trabajo de impresión-->
+        <div id="dialogosBorrarTrabajo"></div>
+
+        <!--Modal editar grupo de impresoras-->
+        <div id="dialogosEditarGrupoImpresora"></div>
+
+        <!--Modal anadir grupo de impresoras-->
+        <div class="modal fade" id="addPrinterGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Añadir grupo de impresoras</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Nombre</label>
+                                <input type="text" class="form-control" id="addNombreGrupo" placeholder="IBM">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer" id="modalAddGroup">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button id="confirmarAnadirGrupo" data-dismiss="modal" type="button" class="btn btn-primary confirmarAddGrupo">Crear grupo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Modal añadir impresora-->
+        <div class="modal fade" id="addPrinter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Añadir impresora</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form>
+                            <div class="form-group">
+                                <label for="addAlias">Alias</label>
+                                <input type="text" class="form-control" id="addAlias" placeholder="GTR3S">
+                            </div>
+                            <div class="form-group">
+                                <label for="addModelo">Modelo</label>
+                                <input type="text" class="form-control" id="addModelo" placeholder="IBM_GTX_500">
+                            </div>
+                            <div class="form-group" id="seleccionarGrupos">
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="addLocation">Localización</label>
+                                <input type="text" class="form-control" id="addLocation" placeholder="Cocina">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="addIP">IP</label>
+                                <input type="text" class="form-control" id="addIP" placeholder="192.168.0.13">
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="estadoCargado" checked>
+                                <label class="form-check-label" for="estadoCargado">
+                                    Impresora cargada
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="estadoSinPapel">
+                                <label class="form-check-label" for="estadoSinPapel">
+                                    Impresora sin papel
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="estadoSinTinta">
+                                <label class="form-check-label" for="estadoSinTinta">
+                                    Impresora sin tinta
+                                </label>
+                            </div>
+
+                        </form>
+
+                        <!--AÑADIR IMPRESORA-->
+                    </div>
+                    <div class="modal-footer" id="modalAddPrinter">
+                        <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button id="confirmarAnadirImpresora" class="btn btn-primary confirmarAddImpresora" data-dismiss="modal">Crear impresora</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Modal trabajos de impresion de impresora-->
+        <div id="dialogosVerTrabajos">
+
+        </div>
+
+        <!--Buscador de impresoras-->
+        <div class="tab-pane fade" id="grupos" role="tabpanel" aria-labelledby="grupos-tab">
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <div id="dropdownBuscableGrupo">
+
+                        <div class="row-md-4">
+                            <h6 class="tituloBuscador">Buscar grupo de impresoras</h6>
+                            <input type="search" class="barra form-control" placeholder="Nombre de grupo" />
+                        </div>
+                        <div class="row-md-4">
+                            <select class="tablitaGrupo multiple form-control" multiple size="6">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Tabla grupos de impresoras-->
+            <table id="grouptable" class="table">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col" class="campo">Nombre del grupo <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaGrupos">
+
+                </tbody>
+            </table>
+
+            <!--Boton añadir grupo de impresoras-->
+            <div data-toggle="tooltip" data-placement="top" title="Añadir grupo de impresoras">
+                <type id="anadir" type="button" data-toggle="modal" data-target="#addPrinterGroup" class="btn btn-outline-primary">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-align-middle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M6 13a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v10zM1 8a.5.5 0 0 0 .5.5H6v-1H1.5A.5.5 0 0 0 1 8zm14 0a.5.5 0 0 1-.5.5H10v-1h4.5a.5.5 0 0 1 .5.5z" />
+                    </svg>
+                </type>
+            </div>
+
+            <!--boton añadir trabajo de impresión-->
+            <div data-toggle="tooltip" data-placement="top" title="Añadir trabajo de impresión">
+                <type id="editar" type="button" data-toggle="modal" data-target="#addPrinterWork" class="btn btn-outline-primary">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 0h5.5v1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h1V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z" />
+                        <path d="M9.5 3V0L14 4.5h-3A1.5 1.5 0 0 1 9.5 3z" />
+                        <path fill-rule="evenodd"
+                            d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                </type>
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="trabajos" role="tabpanel" aria-labelledby="trabajos-tab">...</div>
+    </div>
+
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+
+    <!-- todos los scripts de interaccion, aqui -->
+    <script src="js/pmgr.js" type="module"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+/* usa este fichero para personalizar tus vistas */
+
+table {
+    margin: 5%;
+}
+
+.msg {
+    font-size: 60%;
+}
+
+.campo:hover {
+    background-color: #9fcdff;
+    cursor: pointer;
+}
+
+.campo>img {
+    width: 15px;
+}
+
+button {
+    background: transparent;
+    border: 0px;
+}
+
+#anadir {
+    margin-right: 11%;
+    float: right;
+}
+
+#editar {
+    margin-left: 6%;
+}
+
+.emergente {
+    z-index: 100000;
+}
+
+.form-group,
+.form-control,
+.dropdownBuscableImpresora,
+.dropdownBuscableJob select {
+    width: 100%;
+}
+
+.col-4 {
+    margin-right: 40px;
+}
+
+.job {
+    margin-left: 40px;
+}
+
+.barra {
+    width: auto;
+}
+
+.check-icon {
+    width: 30px;
+}
+
+.tituloBuscador {
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
