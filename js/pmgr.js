@@ -144,6 +144,11 @@ function createDialogoVerImpresora(i) {
                 </div>
                 
                 <div class="form-group">
+                    <label for="changeLocation">Localización</label>
+                    <input type="text" class="form-control" id="changeLocation" value=${i.location}>
+                </div>
+                
+                <div class="form-group">
                     <label for="changeIp">IP</label>
                     <input type="text" class="form-control" id="changeIp" value=${i.ip}>
                 </div>
@@ -915,6 +920,7 @@ $(function() {
         let id = parseInt(idHTML.substring(4), 10);
         let ipChange = $('#changeIp').val();
         let modelo = $('#changeModel').val();
+        let localizacion = $('#changeLocation').val();
         var estado;
         if ($("#estadoCargado").prop('checked')) {
             estado = Pmgr.PrinterStates.PAUSED;
@@ -930,10 +936,10 @@ $(function() {
         //impresoraEditada.modelo = modelo;
         //impresoraEditada.status = estado;
         //console.log(impresoraEditada);
-        Pmgr.setPrinter({id : impresoraEditada.id, alias : impresoraEditada.alias, model : modelo, location : impresoraEditada.location, ip : ipChange, queue : impresoraEditada.queue, status : estado}).then(update);
+        Pmgr.setPrinter({id : impresoraEditada.id, alias : impresoraEditada.alias, model : modelo, location : localizacion, ip : ipChange, queue : impresoraEditada.queue, status : estado}).then(update);
     });
 
-    //confirma editar nombre de grupo
+    //confirma editar nombre de grupo HECHO
     $("#dialogosEditarGrupoImpresora").on("click", "button.confirmarEdicionNombreGrupo", function() {
         let idHTML = $('.modalEditarNombreGrupo').attr('id');
         let id = parseInt(idHTML.substring(9), 10);
