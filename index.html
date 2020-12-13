@@ -123,22 +123,26 @@
                     <div class="modal-body">
 
                         <form>
+                            <div class="form-group">
+                                <label for="autorTrabajo">Nombre del autor</label>
+                                <input type="text" class="form-control" id="autorTrabajo">
+                            </div>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="customFile">
                                 <label class="custom-file-label" for="customFile">Elige un archivo PDF</label>
+                            </div>
                             </div>
                             <br>
                             <p><br>Enviar a:</p>
                             <div class="form-check" id="seleccionarGrupoEImpresoraParaTrabajo">
 
-                            </div>
 
                         </form>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary">Crear trabajo</button>
+                        <button type="button" class="btn btn-primary confirmarAddJob" data-dismiss="modal">Crear trabajo</button>
                     </div>
                 </div>
             </div>

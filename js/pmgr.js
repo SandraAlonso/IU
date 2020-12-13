@@ -614,31 +614,31 @@ function posiblesImpresorasYGrupos() {
     var grupos = "";
     Pmgr.globalState.groups.forEach(e => {
         grupos = grupos.concat(`
-        <option>${e.name}</option>`);
+        <option value="selectGroupForJob${e.id}">${e.name}</option>`);
     });
 
     var impresoras = "";
     Pmgr.globalState.printers.forEach(e => {
         impresoras = impresoras.concat(`
-        <option>${e.alias}</option>`);
+        <option value="${e.id}">${e.alias}</option>`);
     });
 
     return `<div class="form-check">
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-    <label class="form-check-label" for="exampleRadios1">
+    <input class="form-check-input" type="radio" name="exampleRadios" id="checkGrupo" value="option1" checked>
+    <label class="form-check-label" for="checkGrupo">
         Grupo de impresoras
     </label>
-    <select class="form-control" id="exampleFormControlSelect1">
+    <select class="form-control" id="seleccionGrupos">
         ` + grupos + `
     </select>
 </div>
 
 <div class="form-check" id="seleccionarImpresoraParaTrabajo">
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-    <label class="form-check-label" for="exampleRadios2">
+    <input class="form-check-input" type="radio" name="exampleRadios" id="checkImpresora" value="option2">
+    <label class="form-check-label" for="checkImpresora">
         Impresora
     </label>
-    <select class="form-control" id="exampleFormControlSelect2">
+    <select class="form-control" id="seleccionImpresoras">
         ` + impresoras + `
 
     </select>`;
@@ -847,7 +847,7 @@ $(function() {
         var valorId = id.substring(11);
         console.log(valorId);
         $("#dialogosVerTrabajos").empty();
-        var trabajos = verTrabajos(Pmgr.globalState.printers[valorId]);
+        var trabajos = verTrabajos(buscarImpresora(valorId));
         $("#dialogosVerTrabajos").append(trabajos);
     });
 
@@ -913,6 +913,36 @@ $(function() {
         Pmgr.setGroup(grupo);*/
     });
 
+    //crea trabajo HACER
+    $("#addPrinterWork").on("click", "button.confirmarAddJob", function() {
+        let fichero = $('input[type=file]').val().split('\\').pop();
+        let nombreAutor = $('#autorTrabajo').val();
+        //let nombre = $('#addAlias').val()
+        //let modelo = $('#addModelo').val();
+        //let localizacion = $('#addLocation').val();
+        //let idGrupo = $('#selectDeGrupos').val();
+
+        console.log(fichero);
+        console.log(nombreAutor);
+        let impresora;
+        if($("#checkImpresora").prop('checked')){
+            console.log("Checked impresora");
+            impresora = $('#seleccionImpresoras').val()
+            console.log(impresora);
+        } else {
+            console.log("Checked grupo");
+        }
+
+        Pmgr.addJob({printer : impresora, owner : nombreAutor, fileName : fichero}).then(update);
+       //let cadena = Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, status: estado }).then(update);
+        //let imprNueva = buscarImpresoraPorAlias(nombre);
+        //console.log(imprNueva);
+        /*console.log(Pmgr.globalState.printers);
+        let grupo = buscarGrupo(idGrupo);
+        grupo.printers.push(imprNueva.id);
+        Pmgr.setGroup(grupo);*/
+    });
+
     //NUEVO
     //confirma editar impresora FALTA cambiar location
     $("#dialogosEditarImpresora").on("click", "button.confirmarEdicionImpresora", function() {
@@ -952,13 +982,8 @@ $(function() {
 
     });
 
-    //Crea el dialogo para anadir trabajo HECHO
+    //Crea el dialogo para anadir trabajo HECHO Y CORREGIDO
     $("#divAnadirTrabajo").on("click", "button.anadirTrabajo", function() {
-        let id = $(this).attr('id');
-        let dataTarget = $(this).attr('data-target');
-        console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
-        var valorId = id.substring(6);
-        console.log(valorId);
         $("#seleccionarGrupoEImpresoraParaTrabajo").empty();
         $("#seleccionarGrupoEImpresoraParaTrabajo").append(posiblesImpresorasYGrupos());
     });
