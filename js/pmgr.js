@@ -622,7 +622,7 @@ function posiblesGrupos() {
         <option id="seleccionGrupo${e.id}" value="${e.id}">${e.name}</option>`);
     });
     return `<label for="exampleFormControlSelect1">Grupo</label>
-    <select class="form-control" id="selectDeGrupos"> ` + grupos + `
+    <select class="form-control" id="selectDeGrupos" multiple> ` + grupos + `
     </select>`;
 }
 
@@ -879,7 +879,7 @@ $(function() {
         var valorFila = "#filaTrabajo" + idTr;
         console.log(valorFila);
         $(valorFila).empty(); 
-        
+
         Pmgr.rmJob(idEntero).then(update);
     });
 
@@ -901,7 +901,7 @@ $(function() {
         let nombre = $('#addAlias').val()
         let modelo = $('#addModelo').val();
         let localizacion = $('#addLocation').val();
-        let idGrupo = $('#selectDeGrupos').val();
+        let idGrupos = $('#selectDeGrupos').val();
         var estado;
         if ($("#estadoCargado").prop('checked')) {
             estado = Pmgr.PrinterStates.PAUSED;
@@ -911,8 +911,7 @@ $(function() {
             console.log("ha entrado en no tinta");
             estado = Pmgr.PrinterStates.NO_INK;
         }
-
-        //Pmgr.addPrinter({alias: "AA", model: "CXGIE-379", location: "Despacho 231", ip: "192.168.0.64", status: "NO_PAPER"});
+        console.log(idGrupos);
         let cadena = Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, status: estado }).then(update);
         //let imprNueva = buscarImpresoraPorAlias(nombre);
         //console.log(imprNueva);
