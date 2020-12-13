@@ -301,7 +301,7 @@ function createDialogoMostrarGrupo(i) {
     var tablaImpresoras = "";
 
     i.printers.forEach(e => {
-        var impresora = Pmgr.globalState.printers[e];
+        var impresora = buscarImpresora(e);
         console.log(impresora);
         tablaImpresoras = tablaImpresoras.concat(`<tr>
         <th scope="row">${impresora.alias}</th>
@@ -722,7 +722,7 @@ $(function() {
         Funciones de control de las impresoras
                                                      */
 
-    //Crea el dialogo para editar impresoras TERMINAR
+    //Crea el dialogo para editar impresoras HECHO
     $("#impresoras").on("click", "button.editar", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
@@ -796,7 +796,7 @@ $(function() {
         $("#dialogosMostrarGrupoImpresora").append(createDialogoMostrarGrupo(grupo));
     });
 
-    //Crea el dialogo para editar grupo de impresoras HACER
+    //Crea el dialogo para editar grupo de impresoras HECHO
     $("#tablaGrupos").on("click", "button.editarG", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
