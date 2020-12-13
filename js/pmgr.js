@@ -717,7 +717,12 @@ $(function() {
             console.log("Error de login");
         }
     });
-    //Crea el dialogo para editar impresoras
+
+    /* 
+        Funciones de control de las impresoras
+                                                     */
+
+    //Crea el dialogo para editar impresoras TERMINAR
     $("#impresoras").on("click", "button.editar", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
@@ -750,7 +755,7 @@ $(function() {
         $("#dialogosEditarGrupoImpresora").append(createDialogoEditarGrupo(grupo));
     });
 
-    //Crea el dialogo para eliminar impresoras
+    //Crea el dialogo para eliminar impresoras HECHO
     $("#impresoras").on("click", "button.borrarImp", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
@@ -762,7 +767,7 @@ $(function() {
         $("#dialogosBorrarImpresora").append(createDialogoBorrarImpresora(buscarImpresora(valorId)));
     });
 
-    //Elimina impresora
+    //Elimina impresora HECHO
     $("#dialogosBorrarImpresora").on("click", "button.eliminar", function() {
         let id = $(this).attr('id');
         let idImprString = id.substring(8)
@@ -772,14 +777,13 @@ $(function() {
 
 
 
-    //Aniadir grupo de impresoras
-
+    //Aniadir grupo de impresoras HECHO
     $("#modalAddGroup").on("click", "button.confirmarAddGrupo", function() {
         let nombreGrupo = $('#addNombreGrupo').val();
         Pmgr.addGroup({ name: nombreGrupo }).then(update);
     });
 
-    //Crea el dialogo para mostrar grupo de impresoras
+    //Crea el dialogo para mostrar grupo de impresoras HECHO
     $("#tablaGrupos").on("click", "button.mostrarG", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
@@ -792,7 +796,7 @@ $(function() {
         $("#dialogosMostrarGrupoImpresora").append(createDialogoMostrarGrupo(grupo));
     });
 
-    //Crea el dialogo para editar grupo de impresoras
+    //Crea el dialogo para editar grupo de impresoras HACER
     $("#tablaGrupos").on("click", "button.editarG", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
@@ -806,7 +810,7 @@ $(function() {
     });
 
 
-    //Crea el dialogo para eliminar grupo impresoras
+    //Crea el dialogo para eliminar grupo impresoras HECHO
     $("#tablaGrupos").on("click", "button.eliminarG", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
@@ -820,27 +824,17 @@ $(function() {
         $("#dialogosBorrarGrupoImpresora").append(createDialogoBorrarGrupoImpresora(grupo));
     });
 
-    //Elimina grupo
+    //Elimina grupo HECHO
     $("#dialogosBorrarGrupoImpresora").on("click", "button.eliminarG", function() {
         let id = $(this).attr('id');
         let idGImpr = id.substring(9);
         console.log("Hola soy el boton: " + id + " y tengo que eliminar el grupo de impresoras: " + idGImpr);
 
-        /*
-                 console.log(idGImpr);
-                 $("#dialogosBorrarGrupoImpresora").empty();
-                 $('.modal-backdrop').remove();
-                 var valorFila = "#filaG" + idGImpr;
-                 console.log(valorFila);
-                 $(valorFila).empty();
-                //Elimina impresora
-                let id = $(this).attr('id');
-                let idGroupImprString = id.substring(8)*/
         let idGImpr2 = parseInt(idGImpr, 10);
         Pmgr.rmGroup(idGImpr2).then(update);
     });
 
-    //Crea el dialogo para ver trabajos
+    //Crea el dialogo para ver trabajos HECHO
     $("#impresoras").on("click", "button.botonVerTrabajos", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
@@ -864,7 +858,7 @@ $(function() {
          $("#dialogosBorrarTrabajo").append(createDialogoBorrarTrabajos(buscarTrabajo(valorId)));
      }); */
 
-    //Elimina trabajo
+    //Elimina trabajo HACER
     $("#dialogosVerTrabajos").on("click", "button.botonBorrarTrabajo", function() {
         let id = $(this).attr('id');
         let idTr = id.substring(18);
@@ -875,7 +869,7 @@ $(function() {
         $(valorFila).empty();
     });
 
-    //Crea el dialogo para anadir impresoras
+    //Crea el dialogo para anadir impresoras HECHO
     $("#divAnadirImp").on("click", "button.anadirImpresora", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
@@ -887,7 +881,7 @@ $(function() {
     });
 
 
-    //NUEVO
+    //crea impresora FALTA aniadir grupos
     $("#modalAddPrinter").on("click", "button.confirmarAddImpresora", function() {
         let ipAdd = $('#addIP').val();
         let nombre = $('#addAlias').val()
@@ -915,7 +909,7 @@ $(function() {
     });
 
     //NUEVO
-    //confirma editar impresora
+    //confirma editar impresora FALTA cambiar location
     $("#dialogosEditarImpresora").on("click", "button.confirmarEdicionImpresora", function() {
         let idHTML = $('.modalEditar').attr('id');
         let id = parseInt(idHTML.substring(4), 10);
@@ -941,7 +935,7 @@ $(function() {
 
 
 
-    //Crea el dialogo para anadir trabajo
+    //Crea el dialogo para anadir trabajo HECHO
     $("#divAnadirTrabajo").on("click", "button.anadirTrabajo", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
