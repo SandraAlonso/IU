@@ -577,6 +577,22 @@ function buscarTrabajo(id) {
     return sol;
 }
 
+function buscarImprMenosTrabajoDelGrupo(id) {
+    var sol = null;
+    var grupo = buscarGrupo(id);
+    var impresoraAux = null;
+    var impresora = null;
+    var numTrabajos = 1000; //numero arbitrario, suponemos que ninguna impr tiene mas de 1000 trabajos
+    grupo.printers.forEach(e => {
+        impresoraAux = buscarImpresora(e);
+        if(numTrabajos > impresoraAux.queue.length){
+            impresora = impresoraAux;
+            numTrabajos = impresoraAux.queue.length;
+        }
+    });
+    return impresora;
+}
+
 function activaBusquedaDropdown(div, actualizaElementos) {
     let search = $(div).find('input[type=search]');
     let select = $(div).find('select');
@@ -613,8 +629,10 @@ function posiblesGrupos() {
 function posiblesImpresorasYGrupos() {
     var grupos = "";
     Pmgr.globalState.groups.forEach(e => {
-        grupos = grupos.concat(`
-        <option value="selectGroupForJob${e.id}">${e.name}</option>`);
+        if(e.printers.length > 0){
+            grupos = grupos.concat(`
+            <option value="${e.id}">${e.name}</option>`);
+        }
     });
 
     var impresoras = "";
@@ -917,20 +935,17 @@ $(function() {
     $("#addPrinterWork").on("click", "button.confirmarAddJob", function() {
         let fichero = $('input[type=file]').val().split('\\').pop();
         let nombreAutor = $('#autorTrabajo').val();
-        //let nombre = $('#addAlias').val()
-        //let modelo = $('#addModelo').val();
-        //let localizacion = $('#addLocation').val();
-        //let idGrupo = $('#selectDeGrupos').val();
-
-        console.log(fichero);
-        console.log(nombreAutor);
         let impresora;
         if($("#checkImpresora").prop('checked')){
             console.log("Checked impresora");
-            impresora = $('#seleccionImpresoras').val()
+            impresora = $('#seleccionImpresoras').val();
             console.log(impresora);
         } else {
             console.log("Checked grupo");
+            let grupo = $('#seleccionGrupos').val();
+            console.log(grupo);
+            impresora = buscarImprMenosTrabajoDelGrupo(grupo);
+            console.log(impresora);
         }
 
         Pmgr.addJob({printer : impresora, owner : nombreAutor, fileName : fichero}).then(update);
