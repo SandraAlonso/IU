@@ -869,27 +869,18 @@ $(function() {
         $("#dialogosVerTrabajos").append(trabajos);
     });
 
-    //Crea el dialogo para eliminar trabajos
-    /*  $("#impresoras").on("click", "button.botonBorrarTrabajo", function() {
-         let id = $(this).attr('id');
-         let dataTarget = $(this).attr('data-target');
-         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
-    
-         var valorId = id.substring(18);
-         console.log(valorId);
-         $("#dialogosBorrarTrabajo").empty();
-         $("#dialogosBorrarTrabajo").append(createDialogoBorrarTrabajos(buscarTrabajo(valorId)));
-     }); */
-
     //Elimina trabajo HACER
     $("#dialogosVerTrabajos").on("click", "button.botonBorrarTrabajo", function() {
-        let id = $(this).attr('id');
+         let id = $(this).attr('id');
         let idTr = id.substring(18);
+        let idEntero = parseInt(idTr);
 
         console.log(idTr);
         var valorFila = "#filaTrabajo" + idTr;
         console.log(valorFila);
-        $(valorFila).empty();
+        $(valorFila).empty(); 
+        
+        Pmgr.rmJob(idEntero).then(update);
     });
 
     //Crea el dialogo para anadir impresoras HECHO
