@@ -246,7 +246,7 @@ function createGrupo(i) {
 function createDialogoEditarGrupo(i) {
     return ` <div class="modal fade" id="editPrinterGroup" tabindex="-1" role="dialog"
   aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modalEditarNombreGrupo" role="document" id="editGroup${i.id}">
       <div class="modal-content">
           <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLongTitle">Editar grupo de impresoras ${i.name}</h5>
@@ -258,14 +258,14 @@ function createDialogoEditarGrupo(i) {
 
               <form>
                   <div class="form-group">
-                      <label for="exampleFormControlInput1">Nombre</label>
-                      <input type="text" class="form-control" id="exampleFormControlInput1" value=${i.name}>
+                      <label for="changeGroupName">Nombre</label>
+                      <input type="text" class="form-control" id="changeGroupName" value=${i.name}>
                   </div>
               </form>
           </div>
           <div class="modal-footer">
               <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button class="btn btn-primary"  >Guardar</button>
+              <button class="btn btn-primary confirmarEdicionNombreGrupo" data-dismiss="modal">Guardar</button>
           </div>
       </div>
   </div>
@@ -925,15 +925,26 @@ $(function() {
             estado = Pmgr.PrinterStates.NO_INK;
         }
         let impresoraEditada = buscarImpresora(idHTML.substring(4));
-        console.log(impresoraEditada);
-        impresoraEditada.ip = ipChange;
-        impresoraEditada.modelo = modelo;
-        impresoraEditada.status = estado;
-        console.log(impresoraEditada);
+        //console.log(impresoraEditada);
+        //impresoraEditada.ip = ipChange;
+        //impresoraEditada.modelo = modelo;
+        //impresoraEditada.status = estado;
+        //console.log(impresoraEditada);
         Pmgr.setPrinter({id : impresoraEditada.id, alias : impresoraEditada.alias, model : modelo, location : impresoraEditada.location, ip : ipChange, queue : impresoraEditada.queue, status : estado}).then(update);
     });
 
+    //confirma editar nombre de grupo
+    $("#dialogosEditarGrupoImpresora").on("click", "button.confirmarEdicionNombreGrupo", function() {
+        let idHTML = $('.modalEditarNombreGrupo').attr('id');
+        let id = parseInt(idHTML.substring(9), 10);
+        let nameChange = $('#changeGroupName').val();
 
+
+        let grupoEditado = buscarGrupo(idHTML.substring(9));
+        grupoEditado.name = nameChange;
+        Pmgr.setGroup({id : grupoEditado.id, name : nameChange, printers : grupoEditado.printers}).then(update);
+
+    });
 
     //Crea el dialogo para anadir trabajo HECHO
     $("#divAnadirTrabajo").on("click", "button.anadirTrabajo", function() {
