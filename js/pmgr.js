@@ -143,6 +143,10 @@ function createDialogoVerImpresora(i) {
                     <input type="text" class="form-control" id="changeModel" value=${i.model}>
                 </div>
                 
+                <div class="form-group" id="editGruposParaImpresora">
+                    `+ posiblesGruposYSeleccionados(i.id) + `
+                </div>
+
                 <div class="form-group">
                     <label for="changeLocation">Localización</label>
                     <input type="text" class="form-control" id="changeLocation" value=${i.location}>
@@ -621,8 +625,25 @@ function posiblesGrupos() {
         grupos = grupos.concat(`
         <option id="seleccionGrupo${e.id}" value="${e.id}">${e.name}</option>`);
     });
-    return `<label for="exampleFormControlSelect1">Grupo</label>
+    return `<label for="selectDeGrupos">Grupos: Pulsa Ctrl+Click para  añadir/eliminar varios</label>
     <select class="form-control" id="selectDeGrupos" multiple> ` + grupos + `
+    </select>`;
+}
+
+function posiblesGruposYSeleccionados(idImpr) {
+    var grupos = "";
+    Pmgr.globalState.groups.forEach(e => {
+        if (e.printers.includes(idImpr)) {
+            grupos = grupos.concat(`
+            <option id="seleccionGrupoEdit${e.id}" value="${e.id}" selected>${e.name}</option>`);            
+        } else {
+            grupos = grupos.concat(`
+            <option id="seleccionGrupoEdit${e.id}" value="${e.id}">${e.name}</option>`);
+        }
+        
+    });
+    return `<label for="selectDeGruposACambiar">Grupos: Pulsa Ctrl+Click para  añadir/eliminar varios</label>
+    <select class="form-control" id="selectDeGruposACambiar" multiple> ` + grupos + `
     </select>`;
 }
 
@@ -869,7 +890,7 @@ $(function() {
         $("#dialogosVerTrabajos").append(trabajos);
     });
 
-    //Elimina trabajo HACER
+    //Elimina trabajo HECHO
     $("#dialogosVerTrabajos").on("click", "button.botonBorrarTrabajo", function() {
          let id = $(this).attr('id');
         let idTr = id.substring(18);
@@ -912,6 +933,7 @@ $(function() {
             estado = Pmgr.PrinterStates.NO_INK;
         }
         console.log(idGrupos);
+        console.log(idGrupos.length);
         let cadena = Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, status: estado }).then(update);
         //let imprNueva = buscarImpresoraPorAlias(nombre);
         //console.log(imprNueva);
@@ -921,7 +943,7 @@ $(function() {
         Pmgr.setGroup(grupo);*/
     });
 
-    //crea trabajo HACER
+    //crea trabajo HECHO
     $("#addPrinterWork").on("click", "button.confirmarAddJob", function() {
         let fichero = $('input[type=file]').val().split('\\').pop();
         let nombreAutor = $('#autorTrabajo').val();
@@ -939,23 +961,17 @@ $(function() {
         }
 
         Pmgr.addJob({printer : impresora, owner : nombreAutor, fileName : fichero}).then(update);
-       //let cadena = Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, status: estado }).then(update);
-        //let imprNueva = buscarImpresoraPorAlias(nombre);
-        //console.log(imprNueva);
-        /*console.log(Pmgr.globalState.printers);
-        let grupo = buscarGrupo(idGrupo);
-        grupo.printers.push(imprNueva.id);
-        Pmgr.setGroup(grupo);*/
     });
 
     //NUEVO
-    //confirma editar impresora FALTA cambiar location
+    //confirma editar impresora HECHO
     $("#dialogosEditarImpresora").on("click", "button.confirmarEdicionImpresora", function() {
         let idHTML = $('.modalEditar').attr('id');
         let id = parseInt(idHTML.substring(4), 10);
         let ipChange = $('#changeIp').val();
         let modelo = $('#changeModel').val();
         let localizacion = $('#changeLocation').val();
+        let idGrupos = $('#selectDeGruposACambiar').val();
         var estado;
         if ($("#estadoCargado").prop('checked')) {
             estado = Pmgr.PrinterStates.PAUSED;
@@ -966,12 +982,38 @@ $(function() {
             estado = Pmgr.PrinterStates.NO_INK;
         }
         let impresoraEditada = buscarImpresora(idHTML.substring(4));
-        //console.log(impresoraEditada);
-        //impresoraEditada.ip = ipChange;
-        //impresoraEditada.modelo = modelo;
-        //impresoraEditada.status = estado;
-        //console.log(impresoraEditada);
-        Pmgr.setPrinter({id : impresoraEditada.id, alias : impresoraEditada.alias, model : modelo, location : localizacion, ip : ipChange, queue : impresoraEditada.queue, status : estado}).then(update);
+        // console.log(idGrupos);
+
+        let idGruposNumerico = idGrupos.map(Number);
+        // console.log(idGruposNumerico);
+        /* Antes del cambio del profe en el servidor
+        let grupo = null;
+        let colaImpr = null;
+        let indice = null;
+        Pmgr.globalState.groups.forEach(grupo => {
+
+            if (idGruposNumerico.includes(grupo.id)) {
+                console.log("Se mete?");
+                if(!grupo.printers.includes(id)){
+                    console.log("GR bueno");
+                    grupo.printers.push(id);
+                    colaImpr = grupo.printers;
+                    Pmgr.setGroup({id : grupo.id, name : grupo.name, printers : colaImpr}).then(update);
+                }
+            } else {
+                if (grupo.printers.includes(id)) {
+                    indice = grupo.printers.indexOf(id);
+                    grupo.printers.splice(indice, 1);
+                    colaImpr = grupo.printers;
+                    console.log("GR MALO:");
+                    console.log(grupo);
+                    Pmgr.setGroup({id : grupo.id, name : grupo.name, printers : colaImpr}).then(update);
+                }
+            }
+        }); */
+
+
+        Pmgr.setPrinter({id : impresoraEditada.id, alias : impresoraEditada.alias, model : modelo, location : localizacion, ip : ipChange, queue : impresoraEditada.queue, groups : idGruposNumerico, status : estado}).then(update);
     });
 
     //confirma editar nombre de grupo HECHO
@@ -998,4 +1040,5 @@ $(function() {
 // cosas que exponemos para usarlas desde la consola
 window.populate = populate
 window.Pmgr = Pmgr;
+window.update = update;// nuevo del profe
 //window.createPrinterItem = createPrinterItem
