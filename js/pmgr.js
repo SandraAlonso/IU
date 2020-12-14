@@ -682,6 +682,32 @@ function posiblesImpresorasYGrupos() {
 
     </select>`;
 }
+
+
+//validacion
+
+var namePattern = "^[a-z A-Z]{4,30}$";
+
+function checkInput(idInput, pattern) {
+    return $(idInput).val().match(pattern) ? true : false;
+}
+
+function enableSubmit (idForm) {
+    $(idForm + " button.submit").removeAttr("disabled");
+}
+     
+function disableSubmit (idForm) {
+    $(idForm + " button.submit").attr("disabled", "disabled");
+}
+function validarAddImpresora() {
+    if (checkInput("#addAlias", namePattern)) {
+        enableSubmit("#formAddImpresora");
+    }
+    else {
+        disableSubmit("#formAddImpresora");
+    }
+}
+
 //
 // PARTE 2:
 // Código de pegamento, ejecutado sólo una vez que la interfaz esté cargada.
@@ -913,10 +939,14 @@ $(function() {
         console.log(valorId);
         $("#seleccionarGrupos").empty();
         $("#seleccionarGrupos").append(posiblesGrupos());
+        validarAddImpresora();
     });
 
+    $("input").keyup(function(){
+        validarAddImpresora();
+    });
 
-    //crea impresora FALTA aniadir grupos
+    //crea impresora HECHO
     $("#modalAddPrinter").on("click", "button.confirmarAddImpresora", function() {
         let ipAdd = $('#addIP').val();
         let nombre = $('#addAlias').val()
@@ -942,12 +972,13 @@ $(function() {
             Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, groups : idGruposNumerico,status: estado }).then(update);
             
         }
-        //let imprNueva = buscarImpresoraPorAlias(nombre);
-        //console.log(imprNueva);
-        /*console.log(Pmgr.globalState.printers);
-        let grupo = buscarGrupo(idGrupo);
-        grupo.printers.push(imprNueva.id);
-        Pmgr.setGroup(grupo);*/
+
+        //Limpiamos valores del formulario
+        $('#addIP').val("");
+        $('#addAlias').val("");
+        $('#addModelo').val("");
+        $('#addLocation').val("");
+        $('#selectDeGrupos').val(""); 
     });
 
     //crea trabajo HECHO
