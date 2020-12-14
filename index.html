@@ -135,14 +135,14 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <input type="file" class="form-control" pattern="([a-zA-Z0-9\s_\\.\-\(\):])+(.pdf)$" aria-label="Elige un archivo PDF" id="customFile" required>
+                                <input type="file" class="form-control" type="file" accept=".pdf" pattern="([a-zA-Z0-9\s_\\.\-\(\):])+(.pdf)$" aria-label="Elige un archivo PDF" id="customFile" required>
                                 <div class="invalid-feedback">Este archivo no tiene formato valido</div>
-                              </div>
-                            <br>
                             </div>
                             <br>
-                            <p>Enviar a:</p>
-                            <div class="form-check" id="seleccionarGrupoEImpresoraParaTrabajo">
+                    </div>
+                    <br>
+                    <p>Enviar a:</p>
+                    <div class="form-check" id="seleccionarGrupoEImpresoraParaTrabajo">
 
 
                         </form>
@@ -181,16 +181,22 @@
                     </div>
                     <div class="modal-body">
 
-                        <form>
+                        <form id="formAddGrupo" class="needs-validation" novalidate>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Nombre</label>
-                                <input type="text" class="form-control" id="addNombreGrupo" placeholder="IBM">
+                                <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]{4,15}" class="form-control" id="addNombreGrupo" placeholder="IBM" required>
+                                <div class="invalid-feedback">
+                                    Escribe un nombre de grupo único de 4 a 15 caracteres no especiales(@#$~[]).
+                                </div>
+                                <div class="valid-feedback">
+                                    Correcto
+                                </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer" id="modalAddGroup">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button id="confirmarAnadirGrupo" data-dismiss="modal" type="button" class="btn btn-primary confirmarAddGrupo">Crear grupo</button>
+                        <button type="submit" id="confirmarAnadirGrupo" data-dismiss="modal" type="button" class="btn btn-primary confirmarAddGrupo">Crear grupo</button>
                     </div>
                 </div>
             </div>
@@ -211,13 +217,13 @@
                         <form id="formAddImpresora" class="needs-validation" novalidate>
                             <div class="form-group">
                                 <label for="addAlias">Alias</label>
-                                <input type="text"  pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]{4,15}" class="form-control" id="addAlias" placeholder="GTR3S" required>
-                                    <div class="invalid-feedback">
-                                        Escribe un alias único de 4 a 15 caracteres no especiales(@#$~[]).
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Correcto
-                                    </div>
+                                <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]{4,15}" class="form-control" id="addAlias" placeholder="GTR3S" required>
+                                <div class="invalid-feedback">
+                                    Escribe un alias único de 4 a 15 caracteres no especiales(@#$~[]).
+                                </div>
+                                <div class="valid-feedback">
+                                    Correcto
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="addModelo">Modelo</label>

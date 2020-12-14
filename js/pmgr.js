@@ -154,7 +154,7 @@ function createDialogoVerImpresora(i) {
                 </div>
                 
                 <div class="form-group" id="editGruposParaImpresora">
-                    `+ posiblesGruposYSeleccionados(i.id) + `
+                    ` + posiblesGruposYSeleccionados(i.id) + `
                 </div>
 
                 <div class="form-group">
@@ -434,6 +434,7 @@ function verTrabajos(i) {
     </div>
 </div>`;
 }
+
 function verGrupos(i) {
     var tablaGrupos = "";
 
@@ -769,11 +770,11 @@ function enableSubmit(idForm) {
 function disableSubmit(idForm) {
     $(idForm + " button.submit").attr("disabled", "disabled");
 }
+
 function validarAddImpresora() {
     if (checkInput("#addAlias", namePattern)) {
         enableSubmit("#formAddImpresora");
-    }
-    else {
+    } else {
         disableSubmit("#formAddImpresora");
     }
 }
@@ -783,7 +784,7 @@ function validarAddImpresora() {
 // Código de pegamento, ejecutado sólo una vez que la interfaz esté cargada.
 // Generalmente de la forma $("selector").cosaQueSucede(...)
 //
-$(function () {
+$(function() {
 
     // funcion de actualización de ejemplo. Llámala para refrescar interfaz
     function update(result) {
@@ -816,24 +817,24 @@ $(function () {
             update();
 
             $('.tablitaImpresora').hide();
-            $('#dropdownBuscableImpresora').hover(function () {
-                $('*').click(function () { $('.tablitaImpresora').show(); })
-            }, function () {
-                $('*').click(function () { $('.tablitaImpresora').hide(); })
+            $('#dropdownBuscableImpresora').hover(function() {
+                $('*').click(function() { $('.tablitaImpresora').show(); })
+            }, function() {
+                $('*').click(function() { $('.tablitaImpresora').hide(); })
             });
 
             $('.tablitaGrupo').hide();
-            $('#dropdownBuscableGrupo').hover(function () {
-                $('*').click(function () { $('.tablitaGrupo').show(); })
-            }, function () {
-                $('*').click(function () { $('.tablitaGrupo').hide(); })
+            $('#dropdownBuscableGrupo').hover(function() {
+                $('*').click(function() { $('.tablitaGrupo').show(); })
+            }, function() {
+                $('*').click(function() { $('.tablitaGrupo').hide(); })
             });
 
             $('.tablitaJob').hide();
-            $('#dropdownBuscableJob').hover(function () {
-                $('*').click(function () { $('.tablitaJob').show(); })
-            }, function () {
-                $('*').click(function () { $('.tablitaJob').hide(); })
+            $('#dropdownBuscableJob').hover(function() {
+                $('*').click(function() { $('.tablitaJob').show(); })
+            }, function() {
+                $('*').click(function() { $('.tablitaJob').hide(); })
             });
 
             activaBusquedaDropdown($('#dropdownBuscableImpresora'),
@@ -863,7 +864,7 @@ $(function () {
                                                      */
 
     //Crea el dialogo para editar impresoras HECHO
-    $("#impresoras").on("click", "button.editar", function () {
+    $("#impresoras").on("click", "button.editar", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -873,7 +874,7 @@ $(function () {
         $("#dialogosEditarImpresora").append(createDialogoVerImpresora(buscarImpresora(valorId)));
     });
 
-    $("#multiple").on("click", "option.dropdownImpr", function () {
+    $("#multiple").on("click", "option.dropdownImpr", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -883,7 +884,7 @@ $(function () {
         $("#dialogosEditarImpresora").append(createDialogoVerImpresora(Pmgr.globalState.printers[valorId]));
     });
 
-    $("#multiple").on("click", "option.dropdownGrupo", function () {
+    $("#multiple").on("click", "option.dropdownGrupo", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -896,7 +897,7 @@ $(function () {
     });
 
     //Crea el dialogo para eliminar impresoras HECHO
-    $("#impresoras").on("click", "button.borrarImp", function () {
+    $("#impresoras").on("click", "button.borrarImp", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -908,7 +909,7 @@ $(function () {
     });
 
     //Elimina impresora HECHO
-    $("#dialogosBorrarImpresora").on("click", "button.eliminar", function () {
+    $("#dialogosBorrarImpresora").on("click", "button.eliminar", function() {
         let id = $(this).attr('id');
         let idImprString = id.substring(8)
         let idImpr = parseInt(idImprString, 10);
@@ -918,15 +919,23 @@ $(function () {
 
 
     //Aniadir grupo de impresoras HECHO
-    $("#modalAddGroup").on("click", "button.confirmarAddGrupo", function () {
+    $("#modalAddGroup").on("click", "button.confirmarAddGrupo", function() {
         let nombreGrupo = $('#addNombreGrupo').val();
-        Pmgr.addGroup({ name: nombreGrupo }).then(update);
-        //Limpiar campo nombre
-        $('#addNombreGrupo').val("");
+        var objForm = document.getElementById("formAddGrupo");
+        if (objForm.checkValidity()) {
+            Pmgr.addGroup({ name: nombreGrupo }).then(update);
+            //Limpiar campo nombre
+            $('#addNombreGrupo').val("");
+            objForm.classList.remove('was-validated');
+        } else {
+            event.preventDefault();
+            event.stopPropagation();
+            objForm.classList.add('was-validated');
+        }
     });
 
     //Crea el dialogo para mostrar grupo de impresoras HECHO
-    $("#tablaGrupos").on("click", "button.mostrarG", function () {
+    $("#tablaGrupos").on("click", "button.mostrarG", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -939,7 +948,7 @@ $(function () {
     });
 
     //Crea el dialogo para editar grupo de impresoras HECHO
-    $("#tablaGrupos").on("click", "button.editarG", function () {
+    $("#tablaGrupos").on("click", "button.editarG", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -953,7 +962,7 @@ $(function () {
 
 
     //Crea el dialogo para eliminar grupo impresoras HECHO
-    $("#tablaGrupos").on("click", "button.eliminarG", function () {
+    $("#tablaGrupos").on("click", "button.eliminarG", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -967,7 +976,7 @@ $(function () {
     });
 
     //Elimina grupo HECHO
-    $("#dialogosBorrarGrupoImpresora").on("click", "button.eliminarG", function () {
+    $("#dialogosBorrarGrupoImpresora").on("click", "button.eliminarG", function() {
         let id = $(this).attr('id');
         let idGImpr = id.substring(9);
         console.log("Hola soy el boton: " + id + " y tengo que eliminar el grupo de impresoras: " + idGImpr);
@@ -977,7 +986,7 @@ $(function () {
     });
 
     //Crea el dialogo para ver trabajos HECHO
-    $("#impresoras").on("click", "button.botonVerTrabajos", function () {
+    $("#impresoras").on("click", "button.botonVerTrabajos", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -991,7 +1000,7 @@ $(function () {
     });
 
     //Crea un dialogo para ver los grupos de una impresora
-    $("#impresoras").on("click", "button.botonVerGrupos", function () {
+    $("#impresoras").on("click", "button.botonVerGrupos", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -1003,7 +1012,7 @@ $(function () {
 
 
     //Elimina trabajo HECHO
-    $("#dialogosVerTrabajos").on("click", "button.botonBorrarTrabajo", function () {
+    $("#dialogosVerTrabajos").on("click", "button.botonBorrarTrabajo", function() {
         let id = $(this).attr('id');
         let idTr = id.substring(18);
         let idEntero = parseInt(idTr);
@@ -1017,7 +1026,7 @@ $(function () {
     });
 
     //Crea el dialogo para anadir impresoras HECHO
-    $("#divAnadirImp").on("click", "button.anadirImpresora", function () {
+    $("#divAnadirImp").on("click", "button.anadirImpresora", function() {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -1033,7 +1042,7 @@ $(function () {
         }); */
 
     //crea impresora HECHO
-    $("#modalAddPrinter").on("click", "button.confirmarAddImpresora", function () {
+    $("#modalAddPrinter").on("click", "button.confirmarAddImpresora", function() {
         let ipAdd = $('#addIP').val();
         let nombre = $('#addAlias').val()
         let modelo = $('#addModelo').val();
@@ -1086,7 +1095,7 @@ $(function () {
     });
 
     //crea trabajo HECHO
-    $("#addPrinterWork").on("click", "button.confirmarAddJob", function () {
+    $("#addPrinterWork").on("click", "button.confirmarAddJob", function() {
         let fichero = $('input[type=file]').val().split('\\').pop();
         let nombreAutor = $('#autorTrabajo').val();
         let impresora;
@@ -1094,36 +1103,36 @@ $(function () {
         if ($("#checkImpresora").prop('checked')) {
             console.log("Checked impresora");
             impresora = $('#seleccionImpresoras').val();
-            console.log(impresora);
+
         } else {
             console.log("Checked grupo");
             let grupo = $('#seleccionGrupos').val();
             console.log(grupo);
             impresora = buscarImprMenosTrabajoDelGrupo(grupo);
-            console.log(impresora);
         }
 
         var objForm = document.getElementById("formAddTrabajo");
-        if(objForm.checkValidity()){
+        if (objForm.checkValidity()) {
             Pmgr.addJob({ printer: impresora, owner: nombreAutor, fileName: fichero }).then(update);
             //Limpiar campos del formulario
             $('#autorTrabajo').val("");
             $('#seleccionImpresoras').val("");
             $('#seleccionGrupos').val("");
-            objForm.classList.remove('was-validated');/* 
-            $("#dialogosEditarImpresora").empty();
-            $('.modal-backdrop').remove(); */
-        } else{
+            objForm.classList.remove('was-validated');
+            /* 
+                        $("#dialogosEditarImpresora").empty();
+                        $('.modal-backdrop').remove(); */
+        } else {
             event.preventDefault();
             event.stopPropagation();
             objForm.classList.add('was-validated');
         }
 
-        
+
     });
 
     //confirma editar impresora HECHO
-    $("#dialogosEditarImpresora").on("click", "button.confirmarEdicionImpresora", function () {
+    $("#dialogosEditarImpresora").on("click", "button.confirmarEdicionImpresora", function() {
         let idHTML = $('.modalEditar').attr('id');
         let id = parseInt(idHTML.substring(4), 10);
         let ipChange = $('#changeIp').val();
@@ -1136,7 +1145,6 @@ $(function () {
         } else if ($("#estadoSinPapel").prop('checked')) {
             estado = Pmgr.PrinterStates.NO_PAPER;
         } else {
-            console.log("ha entrado en no tinta");
             estado = Pmgr.PrinterStates.NO_INK;
         }
         let impresoraEditada = buscarImpresora(idHTML.substring(4));
@@ -1171,12 +1179,12 @@ $(function () {
         }); */
 
         var objForm = document.getElementById("formEditImpresora");
-        if(objForm.checkValidity()){
+        if (objForm.checkValidity()) {
             Pmgr.setPrinter({ id: impresoraEditada.id, alias: impresoraEditada.alias, model: modelo, location: localizacion, ip: ipChange, queue: impresoraEditada.queue, groups: idGruposNumerico, status: estado }).then(update);
             objForm.classList.remove('was-validated');
             $("#dialogosEditarImpresora").empty();
             $('.modal-backdrop').remove();
-        } else{
+        } else {
             event.preventDefault();
             event.stopPropagation();
             objForm.classList.add('was-validated');
@@ -1184,7 +1192,7 @@ $(function () {
     });
 
     //confirma editar nombre de grupo HECHO
-    $("#dialogosEditarGrupoImpresora").on("click", "button.confirmarEdicionNombreGrupo", function () {
+    $("#dialogosEditarGrupoImpresora").on("click", "button.confirmarEdicionNombreGrupo", function() {
         let idHTML = $('.modalEditarNombreGrupo').attr('id');
         let id = parseInt(idHTML.substring(9), 10);
         let nameChange = $('#changeGroupName').val();
@@ -1197,7 +1205,7 @@ $(function () {
     });
 
     //Crea el dialogo para anadir trabajo HECHO Y CORREGIDO
-    $("#divAnadirTrabajo").on("click", "button.anadirTrabajo", function () {
+    $("#divAnadirTrabajo").on("click", "button.anadirTrabajo", function() {
         $("#seleccionarGrupoEImpresoraParaTrabajo").empty();
         $("#seleccionarGrupoEImpresoraParaTrabajo").append(posiblesImpresorasYGrupos());
     });
