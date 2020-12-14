@@ -83,7 +83,7 @@ function createImpresora(i) {
     if (i.status == 'no_paper') {
         paper_status = ko_icon;
     }
-
+    //AQUI
 
     return ` 
 
@@ -97,6 +97,9 @@ function createImpresora(i) {
   <td>${ink_status}</td>
   <td><button type="button" data-toggle="modal" data-target="#verTrabajos${i.id}" class="botonVerTrabajos" id="trabajosImp${i.id}">
       <u>${i.queue.length}</u>
+    </button></td>
+    <td><button type="button" data-toggle="modal" data-target="#verGrupos${i.id}" class="botonVerGrupos" id="gruposImp${i.id}">
+      <u>${i.groups.length}</u>
     </button></td>
   <td>
 
@@ -406,6 +409,48 @@ function verTrabajos(i) {
     </div>
 </div>`;
 }
+function verGrupos(i) {
+    var tablaGrupos = "";
+
+    i.groups.forEach(e => {
+        var grupo = buscarGrupo(e)
+
+        tablaGrupos = tablaGrupos.concat(`
+        <tr id="filaGrupo${grupo.id}">
+            <td scope="row">${grupo.id}</td>
+                <td>${grupo.name}</td>
+                
+        </tr>`);
+    });
+    return `<div class="modal fade" id="verGrupos${i.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Grupos a los que pertenece ${i.alias}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="printerWorkTable" class="table">
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col" class="campo">Id </th>
+                            <th scope="col" class="campo">Nombre</th>
+                        </tr>
+                    </thead>
+                    <tbody>` + tablaGrupos + `
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>`;
+}
 
 
 function createDialogoBorrarTrabajos(i) {
@@ -589,7 +634,7 @@ function buscarImprMenosTrabajoDelGrupo(id) {
     var numTrabajos = 1000; //numero arbitrario, suponemos que ninguna impr tiene mas de 1000 trabajos
     grupo.printers.forEach(e => {
         impresoraAux = buscarImpresora(e);
-        if(numTrabajos > impresoraAux.queue.length){
+        if (numTrabajos > impresoraAux.queue.length) {
             impresora = impresoraAux;
             numTrabajos = impresoraAux.queue.length;
         }
@@ -609,9 +654,9 @@ function activaBusquedaDropdown(div, actualizaElementos) {
     // filtrado dinámico
     $(search).on('input', () => {
         let w = $(search).val().trim().toLowerCase();
-        if(w)
+        if (w)
             select.show();
-        
+
         let items = $(select).find("option");
         console.log(items);
         items.each((i, o) =>
@@ -635,12 +680,12 @@ function posiblesGruposYSeleccionados(idImpr) {
     Pmgr.globalState.groups.forEach(e => {
         if (e.printers.includes(idImpr)) {
             grupos = grupos.concat(`
-            <option id="seleccionGrupoEdit${e.id}" value="${e.id}" selected>${e.name}</option>`);            
+            <option id="seleccionGrupoEdit${e.id}" value="${e.id}" selected>${e.name}</option>`);
         } else {
             grupos = grupos.concat(`
             <option id="seleccionGrupoEdit${e.id}" value="${e.id}">${e.name}</option>`);
         }
-        
+
     });
     return `<label for="selectDeGruposACambiar">Grupos: Pulsa Ctrl+Click para  añadir/eliminar varios</label>
     <select class="form-control" id="selectDeGruposACambiar" multiple> ` + grupos + `
@@ -650,7 +695,7 @@ function posiblesGruposYSeleccionados(idImpr) {
 function posiblesImpresorasYGrupos() {
     var grupos = "";
     Pmgr.globalState.groups.forEach(e => {
-        if(e.printers.length > 0){
+        if (e.printers.length > 0) {
             grupos = grupos.concat(`
             <option value="${e.id}">${e.name}</option>`);
         }
@@ -692,19 +737,21 @@ function checkInput(idInput, pattern) {
     return $(idInput).val().match(pattern) ? true : false;
 }
 
-function enableSubmit (idForm) {
+function enableSubmit(idForm) {
     $(idForm + " button.submit").removeAttr("disabled");
 }
-     
-function disableSubmit (idForm) {
+
+function disableSubmit(idForm) {
     $(idForm + " button.submit").attr("disabled", "disabled");
 }
 function validarAddImpresora() {
     if (checkInput("#addAlias", namePattern)) {
         enableSubmit("#formAddImpresora");
+        return true;
     }
     else {
         disableSubmit("#formAddImpresora");
+        return false;
     }
 }
 
@@ -713,7 +760,7 @@ function validarAddImpresora() {
 // Código de pegamento, ejecutado sólo una vez que la interfaz esté cargada.
 // Generalmente de la forma $("selector").cosaQueSucede(...)
 //
-$(function() {
+$(function () {
 
     // funcion de actualización de ejemplo. Llámala para refrescar interfaz
     function update(result) {
@@ -746,25 +793,25 @@ $(function() {
             update();
 
             $('.tablitaImpresora').hide();
-            $('#dropdownBuscableImpresora').hover(function() {
-                $('*').click(function(){$('.tablitaImpresora').show();})    
-            }, function() {
-                $('*').click(function(){$('.tablitaImpresora').hide();})
-            });       
+            $('#dropdownBuscableImpresora').hover(function () {
+                $('*').click(function () { $('.tablitaImpresora').show(); })
+            }, function () {
+                $('*').click(function () { $('.tablitaImpresora').hide(); })
+            });
 
             $('.tablitaGrupo').hide();
-            $('#dropdownBuscableGrupo').hover(function() {
-                $('*').click(function(){$('.tablitaGrupo').show();})   
-            }, function() {
-                $('*').click(function(){$('.tablitaGrupo').hide();})
-            });  
+            $('#dropdownBuscableGrupo').hover(function () {
+                $('*').click(function () { $('.tablitaGrupo').show(); })
+            }, function () {
+                $('*').click(function () { $('.tablitaGrupo').hide(); })
+            });
 
             $('.tablitaJob').hide();
-            $('#dropdownBuscableJob').hover(function() {
-                $('*').click(function(){$('.tablitaJob').show();})                  
-            }, function() {
-                $('*').click(function(){$('.tablitaJob').hide();})
-            });  
+            $('#dropdownBuscableJob').hover(function () {
+                $('*').click(function () { $('.tablitaJob').show(); })
+            }, function () {
+                $('*').click(function () { $('.tablitaJob').hide(); })
+            });
 
             activaBusquedaDropdown($('#dropdownBuscableImpresora'),
                 (select) => Pmgr.globalState.printers.forEach(m =>
@@ -793,7 +840,7 @@ $(function() {
                                                      */
 
     //Crea el dialogo para editar impresoras HECHO
-    $("#impresoras").on("click", "button.editar", function() {
+    $("#impresoras").on("click", "button.editar", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -803,7 +850,7 @@ $(function() {
         $("#dialogosEditarImpresora").append(createDialogoVerImpresora(buscarImpresora(valorId)));
     });
 
-    $("#multiple").on("click", "option.dropdownImpr", function() {
+    $("#multiple").on("click", "option.dropdownImpr", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -813,7 +860,7 @@ $(function() {
         $("#dialogosEditarImpresora").append(createDialogoVerImpresora(Pmgr.globalState.printers[valorId]));
     });
 
-    $("#multiple").on("click", "option.dropdownGrupo", function() {
+    $("#multiple").on("click", "option.dropdownGrupo", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -826,7 +873,7 @@ $(function() {
     });
 
     //Crea el dialogo para eliminar impresoras HECHO
-    $("#impresoras").on("click", "button.borrarImp", function() {
+    $("#impresoras").on("click", "button.borrarImp", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -838,7 +885,7 @@ $(function() {
     });
 
     //Elimina impresora HECHO
-    $("#dialogosBorrarImpresora").on("click", "button.eliminar", function() {
+    $("#dialogosBorrarImpresora").on("click", "button.eliminar", function () {
         let id = $(this).attr('id');
         let idImprString = id.substring(8)
         let idImpr = parseInt(idImprString, 10);
@@ -848,13 +895,15 @@ $(function() {
 
 
     //Aniadir grupo de impresoras HECHO
-    $("#modalAddGroup").on("click", "button.confirmarAddGrupo", function() {
+    $("#modalAddGroup").on("click", "button.confirmarAddGrupo", function () {
         let nombreGrupo = $('#addNombreGrupo').val();
         Pmgr.addGroup({ name: nombreGrupo }).then(update);
+        //Limpiar campo nombre
+        $('#addNombreGrupo').val("");
     });
 
     //Crea el dialogo para mostrar grupo de impresoras HECHO
-    $("#tablaGrupos").on("click", "button.mostrarG", function() {
+    $("#tablaGrupos").on("click", "button.mostrarG", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -867,7 +916,7 @@ $(function() {
     });
 
     //Crea el dialogo para editar grupo de impresoras HECHO
-    $("#tablaGrupos").on("click", "button.editarG", function() {
+    $("#tablaGrupos").on("click", "button.editarG", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -881,7 +930,7 @@ $(function() {
 
 
     //Crea el dialogo para eliminar grupo impresoras HECHO
-    $("#tablaGrupos").on("click", "button.eliminarG", function() {
+    $("#tablaGrupos").on("click", "button.eliminarG", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -895,7 +944,7 @@ $(function() {
     });
 
     //Elimina grupo HECHO
-    $("#dialogosBorrarGrupoImpresora").on("click", "button.eliminarG", function() {
+    $("#dialogosBorrarGrupoImpresora").on("click", "button.eliminarG", function () {
         let id = $(this).attr('id');
         let idGImpr = id.substring(9);
         console.log("Hola soy el boton: " + id + " y tengo que eliminar el grupo de impresoras: " + idGImpr);
@@ -905,7 +954,7 @@ $(function() {
     });
 
     //Crea el dialogo para ver trabajos HECHO
-    $("#impresoras").on("click", "button.botonVerTrabajos", function() {
+    $("#impresoras").on("click", "button.botonVerTrabajos", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -914,24 +963,38 @@ $(function() {
         $("#dialogosVerTrabajos").empty();
         var trabajos = verTrabajos(buscarImpresora(valorId));
         $("#dialogosVerTrabajos").append(trabajos);
+        console.log("hola");
+
     });
 
+    //Crea un dialogo para ver los grupos de una impresora
+    $("#impresoras").on("click", "button.botonVerGrupos", function () {
+        let id = $(this).attr('id');
+        let dataTarget = $(this).attr('data-target');
+        console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
+        var valorId = id.substring(9);
+        $("#dialogosVerGrupos").empty();
+        var grupos = verGrupos(buscarImpresora(valorId));
+        $("#dialogosVerGrupos").append(grupos);
+    });
+   
+
     //Elimina trabajo HECHO
-    $("#dialogosVerTrabajos").on("click", "button.botonBorrarTrabajo", function() {
-         let id = $(this).attr('id');
+    $("#dialogosVerTrabajos").on("click", "button.botonBorrarTrabajo", function () {
+        let id = $(this).attr('id');
         let idTr = id.substring(18);
         let idEntero = parseInt(idTr);
 
         console.log(idTr);
         var valorFila = "#filaTrabajo" + idTr;
         console.log(valorFila);
-        $(valorFila).empty(); 
+        $(valorFila).empty();
 
         Pmgr.rmJob(idEntero).then(update);
     });
 
     //Crea el dialogo para anadir impresoras HECHO
-    $("#divAnadirImp").on("click", "button.anadirImpresora", function() {
+    $("#divAnadirImp").on("click", "button.anadirImpresora", function () {
         let id = $(this).attr('id');
         let dataTarget = $(this).attr('data-target');
         console.log("Hola soy el boton: " + id + " y tengo que sacar el modal: " + dataTarget);
@@ -942,12 +1005,12 @@ $(function() {
         validarAddImpresora();
     });
 
-    $("input").keyup(function(){
+    $("input").keyup(function () {
         validarAddImpresora();
     });
 
     //crea impresora HECHO
-    $("#modalAddPrinter").on("click", "button.confirmarAddImpresora", function() {
+    $("#modalAddPrinter").on("click", "button.confirmarAddImpresora", function () {
         let ipAdd = $('#addIP').val();
         let nombre = $('#addAlias').val()
         let modelo = $('#addModelo').val();
@@ -962,31 +1025,33 @@ $(function() {
             console.log("ha entrado en no tinta");
             estado = Pmgr.PrinterStates.NO_INK;
         }
-        console.log(idGrupos);
-        console.log(idGrupos.length);
-        if (idGrupos.length == 0) {
-            Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, status: estado }).then(update);
-            
-        } else {
-            let idGruposNumerico = idGrupos.map(Number);
-            Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, groups : idGruposNumerico,status: estado }).then(update);
-            
-        }
 
-        //Limpiamos valores del formulario
-        $('#addIP').val("");
-        $('#addAlias').val("");
-        $('#addModelo').val("");
-        $('#addLocation').val("");
-        $('#selectDeGrupos').val(""); 
+            console.log(idGrupos);
+            console.log(idGrupos.length);
+            if (idGrupos.length == 0) {
+                Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, status: estado }).then(update);
+
+            } else {
+                let idGruposNumerico = idGrupos.map(Number);
+                Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, groups: idGruposNumerico, status: estado }).then(update);
+
+            
+
+            //Limpiamos valores del formulario
+            $('#addIP').val("");
+            $('#addAlias').val("");
+            $('#addModelo').val("");
+            $('#addLocation').val("");
+            $('#selectDeGrupos').val("");
+        }
     });
 
     //crea trabajo HECHO
-    $("#addPrinterWork").on("click", "button.confirmarAddJob", function() {
+    $("#addPrinterWork").on("click", "button.confirmarAddJob", function () {
         let fichero = $('input[type=file]').val().split('\\').pop();
         let nombreAutor = $('#autorTrabajo').val();
         let impresora;
-        if($("#checkImpresora").prop('checked')){
+        if ($("#checkImpresora").prop('checked')) {
             console.log("Checked impresora");
             impresora = $('#seleccionImpresoras').val();
             console.log(impresora);
@@ -998,12 +1063,15 @@ $(function() {
             console.log(impresora);
         }
 
-        Pmgr.addJob({printer : impresora, owner : nombreAutor, fileName : fichero}).then(update);
+        Pmgr.addJob({ printer: impresora, owner: nombreAutor, fileName: fichero }).then(update);
+        //Limpiar campos del formulario
+        $('#autorTrabajo').val("");
+        $('#seleccionImpresoras').val("");
+        $('#seleccionGrupos').val("");
     });
 
-    //NUEVO
     //confirma editar impresora HECHO
-    $("#dialogosEditarImpresora").on("click", "button.confirmarEdicionImpresora", function() {
+    $("#dialogosEditarImpresora").on("click", "button.confirmarEdicionImpresora", function () {
         let idHTML = $('.modalEditar').attr('id');
         let id = parseInt(idHTML.substring(4), 10);
         let ipChange = $('#changeIp').val();
@@ -1051,11 +1119,11 @@ $(function() {
         }); */
 
 
-        Pmgr.setPrinter({id : impresoraEditada.id, alias : impresoraEditada.alias, model : modelo, location : localizacion, ip : ipChange, queue : impresoraEditada.queue, groups : idGruposNumerico, status : estado}).then(update);
+        Pmgr.setPrinter({ id: impresoraEditada.id, alias: impresoraEditada.alias, model: modelo, location: localizacion, ip: ipChange, queue: impresoraEditada.queue, groups: idGruposNumerico, status: estado }).then(update);
     });
 
     //confirma editar nombre de grupo HECHO
-    $("#dialogosEditarGrupoImpresora").on("click", "button.confirmarEdicionNombreGrupo", function() {
+    $("#dialogosEditarGrupoImpresora").on("click", "button.confirmarEdicionNombreGrupo", function () {
         let idHTML = $('.modalEditarNombreGrupo').attr('id');
         let id = parseInt(idHTML.substring(9), 10);
         let nameChange = $('#changeGroupName').val();
@@ -1063,12 +1131,12 @@ $(function() {
 
         let grupoEditado = buscarGrupo(idHTML.substring(9));
         grupoEditado.name = nameChange;
-        Pmgr.setGroup({id : grupoEditado.id, name : nameChange, printers : grupoEditado.printers}).then(update);
+        Pmgr.setGroup({ id: grupoEditado.id, name: nameChange, printers: grupoEditado.printers }).then(update);
 
     });
 
     //Crea el dialogo para anadir trabajo HECHO Y CORREGIDO
-    $("#divAnadirTrabajo").on("click", "button.anadirTrabajo", function() {
+    $("#divAnadirTrabajo").on("click", "button.anadirTrabajo", function () {
         $("#seleccionarGrupoEImpresoraParaTrabajo").empty();
         $("#seleccionarGrupoEImpresoraParaTrabajo").append(posiblesImpresorasYGrupos());
     });
@@ -1078,5 +1146,4 @@ $(function() {
 // cosas que exponemos para usarlas desde la consola
 window.populate = populate
 window.Pmgr = Pmgr;
-window.update = update;// nuevo del profe
 //window.createPrinterItem = createPrinterItem
