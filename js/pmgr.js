@@ -934,7 +934,14 @@ $(function() {
         }
         console.log(idGrupos);
         console.log(idGrupos.length);
-        let cadena = Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, status: estado }).then(update);
+        if (idGrupos.length == 0) {
+            Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, status: estado }).then(update);
+            
+        } else {
+            let idGruposNumerico = idGrupos.map(Number);
+            Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, groups : idGruposNumerico,status: estado }).then(update);
+            
+        }
         //let imprNueva = buscarImpresoraPorAlias(nombre);
         //console.log(imprNueva);
         /*console.log(Pmgr.globalState.printers);
