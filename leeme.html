@@ -13,12 +13,52 @@
     <h4>
         Hemos realizado las correspondientes correcciones indicadas en clase, así como las funcionalidades para esta entrega. Todos los cambios realizados se mencionan en la siguiente lista.
     </h4>
+    <h2>Funcionalidad </h2>
+    <ul>
+        <li>Impresoras
+            <ul>
+                <li>Añadir impresora</li>
+                <li>Eliminar impresora</li>
+                <li>Modificar impresora</li>
+                <li>Ver impresora</li>
+            </ul>
+        </li>
+        <li>Grupos de impresoras
+            <ul>
+                <li>Añadir grupo de impresoras</li>
+                <li>Modificar grupo de impresoras</li>
+                <li>Eliminar grupo de impresoras</li>
+                <li>Ver grupo de impresoras</li>
+
+            </ul>
+        </li>
+        <li>Trabajos de impresión
+            <ul>
+                <li>Añadir trabajo de impresión</li>
+                <li>Modificar trabajo de impresión</li>
+                <li>Eliminar trabajo de impresión</li>
+                <li>Ver trabajos de impresión</li>
+            </ul>
+        </li>
+        <li>Todos los formularios han sido validados:
+            <ul>
+                <li>Formato de la IP en IPv4.</li>
+                <li>Solo permite imprimir ficheros de tipo pdf.</li>
+                <li>Los alias de impresoras y nombres de grupos son únicos, tienen entre 4 y 15 caracteres y estos no son especiales.</li>
+                <li>El modelo y localización de las impresoras no contienen caracteres especuales.</li>
+                <li>El nombre del autor del trabajo de impresión no contiene caracteres especiales.</li>
+                <li>Ningún atributo puede quedar en vacío</li>
+            </ul>
+        </li>
+
+    </ul>
+    <h2>Cambios con respecto a la entrega pasada</h2>
     <ul>
         <li>
-            Ya no pedimos al usuario que añada una cantidad concreta de papel y tinta, sino que puede marcar si hay papel o tinta y, en función de su respuesta, se añadirá automáticamente la cantidad adecuada.
+            Ya no pedimos al usuario que añada una cantidad concreta de papel y tinta, sino que puede marcar si hay papel o tinta o esta cargada.
         </li>
         <li>
-            Se han añadido títulos indicativos a los campos de búsqueda para identificar dichos buscadores.
+            Se han añadido títulos buscadores de impresoras y grupos para poder diferenciarlos mejor.
         </li>
         <li>
             Hemos corregido el fallo con las imágenes de los estados de la tinta y el papel (En linux no se veían debido a unas mayúsculas).
@@ -27,17 +67,9 @@
             Los buscadores de impresoras, grupos y trabajos se ocultan cuando no están siendo utilizados para reducir el espacio en la pantalla. Para visualizarlo se debe pulsar en el apartado de escribir.
         </li>
         <li>
-            Implementada la funcionalidad de añadir y eliminar grupos, impresoras y trabajos de impresión, así como editar grupo y impresora.
-        </li>
-        <li>
-            Todos los "Añadir" y "Editar" cuentan con sus correspondientes validaciones de formulario para asegurarnos de que los datos están siendo guardados correctamente.
-        </li>
-        <li>
             Hemos añadido un selector para poder seleccionar más de una impresora en un grupo al crearlo o editarlo y más de un grupo al editar o crear una impresora al pulsar Ctrl+click (indicaciones en los modales correspondientes).
         </li>
-        <li>
-            Si en el selector comentado en el anterior punto se selecciona una impresora o grupo que ya estaba añadido anteriormente, se procederá a eliminar dicha impresora para el grupo editado o dicho grupo para la impresora editada.
-        </li>
+
     </ul>
 </body>
 

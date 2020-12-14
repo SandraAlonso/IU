@@ -70,7 +70,7 @@ function createPrinterItem(printer) {
 
 function createImpresora(i) {
 
-    var ok_icon = `<img class="check-icon" src="img/check-symbol.png">`;
+    var ok_icon = `<img class="check-icon" src="img/checksymbol.png">`;
     var ko_icon = `<img class="check-icon" src="img/cross.png">`;
 
     var ink_status = ok_icon;
@@ -292,7 +292,7 @@ function createDialogoEditarGrupo(i) {
                       <label for="changeGroupName">Nombre</label>
                       <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]{4,15}" class="form-control" id="changeGroupName" value=${i.name} required>
                         <div class="invalid-feedback">
-                            Escribe un nombre único de 4 a 15 caracteres no especiales(@#$~[]).
+                            Escribe un nombre único y diferente de 4 a 15 caracteres no especiales(@#$~[]).
                         </div>
                         <div class="valid-feedback">
                             Correcto
@@ -642,6 +642,16 @@ function buscarGrupo(id) {
     return sol;
 }
 
+function buscarGrupoPorNombre(name) {
+    var sol = null;
+    Pmgr.globalState.groups.forEach(e => {
+        if (name == e.name) {
+            sol = e;
+        }
+    });
+    return sol;
+}
+
 function buscarTrabajo(id) {
     var sol = null;
     Pmgr.globalState.jobs.forEach(e => {
@@ -660,6 +670,7 @@ function buscarImprMenosTrabajoDelGrupo(id) {
     var numTrabajos = 1000; //numero arbitrario, suponemos que ninguna impr tiene mas de 1000 trabajos
     grupo.printers.forEach(e => {
         impresoraAux = buscarImpresora(e);
+        console.log(impresoraAux);
         if (numTrabajos > impresoraAux.queue.length) {
             impresora = impresoraAux;
             numTrabajos = impresoraAux.queue.length;
@@ -922,6 +933,14 @@ $(function() {
     $("#modalAddGroup").on("click", "button.confirmarAddGrupo", function() {
         let nombreGrupo = $('#addNombreGrupo').val();
         var objForm = document.getElementById("formAddGrupo");
+
+        var obj = document.getElementById("addNombreGrupo");
+        if (buscarGrupoPorNombre(obj.value) != null) {
+            obj.setCustomValidity('Escribe un nombre de grupo unico');
+        } else {
+            obj.setCustomValidity('');
+        }
+
         if (objForm.checkValidity()) {
             Pmgr.addGroup({ name: nombreGrupo }).then(update);
             //Limpiar campo nombre
@@ -1114,12 +1133,13 @@ $(function() {
         }
         var objForm = document.getElementById("formAddTrabajo");
         if (objForm.checkValidity()) {
-            Pmgr.addJob({ printer: impresora, owner: nombreAutor, fileName: fichero }).then(update);
+            Pmgr.addJob({ printer: impresora.id, owner: nombreAutor, fileName: fichero }).then(update);
             //Limpiar campos del formulario
             $('#autorTrabajo').val("");
             $('#seleccionImpresoras').val("");
             $('#seleccionGrupos').val("");
             objForm.classList.remove('was-validated');
+            $('#addPrinterWork').modal('hide');
         } else {
             event.preventDefault();
             event.stopPropagation();
@@ -1180,8 +1200,7 @@ $(function() {
         if (objForm.checkValidity()) {
             Pmgr.setPrinter({ id: impresoraEditada.id, alias: impresoraEditada.alias, model: modelo, location: localizacion, ip: ipChange, queue: impresoraEditada.queue, groups: idGruposNumerico, status: estado }).then(update);
             objForm.classList.remove('was-validated');
-            $("#dialogosEditarImpresora").empty();
-            $('.modal-backdrop').remove();
+            $('.modalEditar').modal('hide');
         } else {
             event.preventDefault();
             event.stopPropagation();
@@ -1195,6 +1214,13 @@ $(function() {
         let id = parseInt(idHTML.substring(9), 10);
         let nameChange = $('#changeGroupName').val();
 
+        var obj = document.getElementById("changeGroupName");
+        if (buscarGrupoPorNombre(obj.value) != null) {
+            obj.setCustomValidity('Escribe un nombre de grupo unico');
+        } else {
+            obj.setCustomValidity('');
+        }
+
         var objForm = document.getElementById("formEditGrupo");
 
         if (objForm.checkValidity()) {
@@ -1203,8 +1229,7 @@ $(function() {
             Pmgr.setGroup({ id: grupoEditado.id, name: nameChange, printers: grupoEditado.printers }).then(update);
 
             objForm.classList.remove('was-validated');
-            $("#dialogosEditarGrupoImpresora").empty();
-            $('.modal-backdrop').remove();
+            $('#editPrinterGroup').modal('hide');
         } else {
             event.preventDefault();
             event.stopPropagation();
@@ -1225,4 +1250,4 @@ $(function() {
 // cosas que exponemos para usarlas desde la consola
 window.populate = populate
 window.Pmgr = Pmgr;
-//window.createPrinterItem = createPrinterItem
+//window.createPrinterItem = createPrinterItemc
