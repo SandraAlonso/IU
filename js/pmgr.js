@@ -287,22 +287,22 @@ function createDialogoEditarGrupo(i) {
           </div>
           <div class="modal-body">
 
-              <form>
+              <form id="formEditGrupo" class="needs-validation" novalidate>
                   <div class="form-group">
                       <label for="changeGroupName">Nombre</label>
                       <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]{4,15}" class="form-control" id="changeGroupName" value=${i.name} required>
-                      <div class="invalid-feedback">
-                                        Escribe un nombre único de 4 a 15 caracteres no especiales(@#$~[]).
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Correcto
-                                    </div>
+                        <div class="invalid-feedback">
+                            Escribe un nombre único de 4 a 15 caracteres no especiales(@#$~[]).
+                        </div>
+                        <div class="valid-feedback">
+                            Correcto
+                        </div>
                   </div>
               </form>
           </div>
           <div class="modal-footer">
               <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button class="btn btn-primary confirmarEdicionNombreGrupo" data-dismiss="modal">Guardar</button>
+              <button type="submit" class="btn btn-primary confirmarEdicionNombreGrupo">Guardar</button>
           </div>
       </div>
   </div>
@@ -1099,18 +1099,19 @@ $(function() {
         let fichero = $('input[type=file]').val().split('\\').pop();
         let nombreAutor = $('#autorTrabajo').val();
         let impresora;
-        console.log(fichero);
         if ($("#checkImpresora").prop('checked')) {
-            console.log("Checked impresora");
             impresora = $('#seleccionImpresoras').val();
 
         } else {
-            console.log("Checked grupo");
             let grupo = $('#seleccionGrupos').val();
-            console.log(grupo);
             impresora = buscarImprMenosTrabajoDelGrupo(grupo);
         }
-
+        var obj = document.getElementById("customFile");
+        if (fichero.endsWith(".pdf")) {
+            obj.setCustomValidity('');
+        } else {
+            obj.setCustomValidity('Debe ser pdf');
+        }
         var objForm = document.getElementById("formAddTrabajo");
         if (objForm.checkValidity()) {
             Pmgr.addJob({ printer: impresora, owner: nombreAutor, fileName: fichero }).then(update);
@@ -1119,9 +1120,6 @@ $(function() {
             $('#seleccionImpresoras').val("");
             $('#seleccionGrupos').val("");
             objForm.classList.remove('was-validated');
-            /* 
-                        $("#dialogosEditarImpresora").empty();
-                        $('.modal-backdrop').remove(); */
         } else {
             event.preventDefault();
             event.stopPropagation();
@@ -1197,10 +1195,22 @@ $(function() {
         let id = parseInt(idHTML.substring(9), 10);
         let nameChange = $('#changeGroupName').val();
 
+        var objForm = document.getElementById("formEditGrupo");
 
-        let grupoEditado = buscarGrupo(idHTML.substring(9));
-        grupoEditado.name = nameChange;
-        Pmgr.setGroup({ id: grupoEditado.id, name: nameChange, printers: grupoEditado.printers }).then(update);
+        if (objForm.checkValidity()) {
+            let grupoEditado = buscarGrupo(idHTML.substring(9));
+            grupoEditado.name = nameChange;
+            Pmgr.setGroup({ id: grupoEditado.id, name: nameChange, printers: grupoEditado.printers }).then(update);
+
+            objForm.classList.remove('was-validated');
+            $("#dialogosEditarGrupoImpresora").empty();
+            $('.modal-backdrop').remove();
+        } else {
+            event.preventDefault();
+            event.stopPropagation();
+            objForm.classList.add('was-validated');
+        }
+
 
     });
 

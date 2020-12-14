@@ -122,11 +122,10 @@
                         </button>
                     </div>
                     <div class="modal-body">
-
                         <form id="formAddTrabajo" class="needs-validation" novalidate>
                             <div class="form-group">
                                 <label for="autorTrabajo">Nombre del autor</label>
-                                <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]+" class="form-control" id="autorTrabajo" placeholder="Pepe Pérez" required>
+                                <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]" class="form-control" id="autorTrabajo" placeholder="Pepe Pérez" required>
                                 <div class="invalid-feedback">
                                     Escribe un nombre de autor sin caracteres especiales (@#$~[]).
                                 </div>
@@ -134,24 +133,22 @@
                                     Correcto
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <input type="file" class="form-control" type="file" accept=".pdf" pattern="([a-zA-Z0-9\s_\\.\-\(\):])+(.pdf)$" aria-label="Elige un archivo PDF" id="customFile" required>
+                            <div class="form-group">
+                                <input type="file" class="form-control" aria-label="Elige un archivo PDF" id="customFile" required>
                                 <div class="invalid-feedback">Este archivo no tiene formato valido</div>
                             </div>
-                            <br>
-                    </div>
-                    <br>
-                    <p>Enviar a:</p>
-                    <div class="form-check" id="seleccionarGrupoEImpresoraParaTrabajo">
-
-
+                            <div class="form-group">
+                                <p>Enviar a:</p>
+                                <div class="form-check" id="seleccionarGrupoEImpresoraParaTrabajo"></div>
+                            </div>
                         </form>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary confirmarAddJob" data-dismiss="modal">Crear trabajo</button>
+                        <button type="submit" class="btn btn-primary confirmarAddJob" data-dismiss="modal">Crear
+                            trabajo</button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -286,7 +283,8 @@
                     </div>
                     <div class="modal-footer" id="modalAddPrinter">
                         <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" id="confirmarAnadirImpresora" class="btn btn-primary confirmarAddImpresora" data-dismiss="modal">Crear impresora</button>
+                        <button type="submit" id="confirmarAnadirImpresora" class="btn btn-primary confirmarAddImpresora" data-dismiss="modal">Crear
+                            impresora</button>
                     </div>
                 </div>
             </div>
