@@ -71,6 +71,7 @@
                         <th scope="col" class="campo">Papel <img src="img/flechita.png"></th>
                         <th scope="col" class="campo">Tinta <img src="img/flechita.png"></th>
                         <th scope="col" class="campo">Trabajos <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Grupos <img src="img/flechita.png"></th>
                         <th scope="col" class="campo">Opciones </th>
                     </tr>
                 </thead>
@@ -203,11 +204,11 @@
                         <form id="formAddImpresora">
                             <div class="form-group">
                                 <label for="addAlias">Alias</label>
-                                <input type="text" class="form-control" id="addAlias" placeholder="GTR3S">
+                                <input type="text"  pattern="[a-z]{1,15}" class="form-control" id="addAlias" placeholder="GTR3S" >
                             </div>
                             <div class="form-group">
                                 <label for="addModelo">Modelo</label>
-                                <input type="text" class="form-control" id="addModelo" placeholder="IBM_GTX_500">
+                                <input type="text" class="form-control" id="addModelo" placeholder="IBM_GTX_500" requiered>
                             </div>
                             <div class="form-group" id="seleccionarGrupos">
 
@@ -215,12 +216,12 @@
 
                             <div class="form-group">
                                 <label for="addLocation">Localización</label>
-                                <input type="text" class="form-control" id="addLocation" placeholder="Cocina">
+                                <input type="text" class="form-control" id="addLocation" placeholder="Cocina" requiered>
                             </div>
 
                             <div class="form-group">
                                 <label for="addIP">IP</label>
-                                <input type="text" class="form-control" id="addIP" placeholder="192.168.0.13">
+                                <input type="text" class="form-control" id="addIP" placeholder="192.168.0.13" requiered>
                             </div>
 
                             <div class="form-check">
@@ -248,7 +249,7 @@
                     </div>
                     <div class="modal-footer" id="modalAddPrinter">
                         <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button disabled type="submit" id="confirmarAnadirImpresora" class="btn btn-primary confirmarAddImpresora" data-dismiss="modal">Crear impresora</button>
+                        <button type="submit" id="confirmarAnadirImpresora" class="btn btn-primary confirmarAddImpresora" data-dismiss="modal">Crear impresora</button>
                     </div>
                 </div>
             </div>
@@ -258,7 +259,9 @@
         <div id="dialogosVerTrabajos">
 
         </div>
+        <div id="dialogosVerGrupos">
 
+        </div>
         <!--Buscador de impresoras-->
         <div class="tab-pane fade" id="grupos" role="tabpanel" aria-labelledby="grupos-tab">
             <div class="row justify-content-center">
