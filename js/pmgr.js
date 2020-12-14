@@ -70,17 +70,17 @@ function createPrinterItem(printer) {
 
 function createImpresora(i) {
 
-    var ok_icon = `<img class="check-icon" src="img/check-Symbol.png">`;
+    var ok_icon = `<img class="check-icon" src="img/check-symbol.png">`;
     var ko_icon = `<img class="check-icon" src="img/cross.png">`;
 
     var ink_status = ok_icon;
     var paper_status = ok_icon;
 
-    if (i.status == 'no_ink') {
+    if (i.status == 'NO_INK') {
         ink_status = ko_icon;
     }
 
-    if (i.status == 'no_paper') {
+    if (i.status == 'NO_PAPER') {
         paper_status = ko_icon;
     }
     //AQUI
@@ -138,12 +138,19 @@ function createDialogoVerImpresora(i) {
         </div>
         <div class="modal-body">
 
-            <form>
+            <form id="formEditImpresora" class="needs-validation" novalidate>
             
         <div class="form-group">
                 <div class="form-group">
                     <label for="changeModel">Modelo</label>
-                    <input type="text" class="form-control" id="changeModel" value=${i.model}>
+                    <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]+" class="form-control" id="changeModel" value=${i.model} required>
+                    <div class="invalid-feedback">
+                        Escribe un modelo sin caracteres especiales (@#$~[]).
+                     </div>
+                    <div class="valid-feedback">
+                        Correcto
+                    </div>
+                        
                 </div>
                 
                 <div class="form-group" id="editGruposParaImpresora">
@@ -152,12 +159,24 @@ function createDialogoVerImpresora(i) {
 
                 <div class="form-group">
                     <label for="changeLocation">Localización</label>
-                    <input type="text" class="form-control" id="changeLocation" value=${i.location}>
+                    <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]+" class="form-control" id="changeLocation" value=${i.location} required>
+                    <div class="invalid-feedback">
+                        Escribe una localización sin caracteres especiales (@#$~[]).
+                    </div>
+                    <div class="valid-feedback">
+                        Correcto
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="changeIp">IP</label>
-                    <input type="text" class="form-control" id="changeIp" value=${i.ip}>
+                    <input type="text" pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"  class="form-control" id="changeIp" value=${i.ip} required>
+                    <div class="invalid-feedback">
+                    La IP no tiene el formato apropiado de IPv4: (xxx.xxx.xxx.xxx) donde x es un número
+                    </div>
+                    <div class="valid-feedback">
+                     Correcto
+                </div>
                 </div>
                 
                 </div>
@@ -187,7 +206,7 @@ function createDialogoVerImpresora(i) {
         </div>
         <div class="modal-footer" id ="modalEditPrinter" >
             <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary confirmarEdicionImpresora"  data-dismiss="modal">Guardar</button>
+            <button type="submit" class="btn btn-primary confirmarEdicionImpresora">Guardar</button>
         </div>
     </div>
 </div>
@@ -271,7 +290,13 @@ function createDialogoEditarGrupo(i) {
               <form>
                   <div class="form-group">
                       <label for="changeGroupName">Nombre</label>
-                      <input type="text" class="form-control" id="changeGroupName" value=${i.name}>
+                      <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]{4,15}" class="form-control" id="changeGroupName" value=${i.name} required>
+                      <div class="invalid-feedback">
+                                        Escribe un nombre único de 4 a 15 caracteres no especiales(@#$~[]).
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Correcto
+                                    </div>
                   </div>
               </form>
           </div>
@@ -747,11 +772,9 @@ function disableSubmit(idForm) {
 function validarAddImpresora() {
     if (checkInput("#addAlias", namePattern)) {
         enableSubmit("#formAddImpresora");
-        return true;
     }
     else {
         disableSubmit("#formAddImpresora");
-        return false;
     }
 }
 
@@ -977,7 +1000,7 @@ $(function () {
         var grupos = verGrupos(buscarImpresora(valorId));
         $("#dialogosVerGrupos").append(grupos);
     });
-   
+
 
     //Elimina trabajo HECHO
     $("#dialogosVerTrabajos").on("click", "button.botonBorrarTrabajo", function () {
@@ -1002,12 +1025,12 @@ $(function () {
         console.log(valorId);
         $("#seleccionarGrupos").empty();
         $("#seleccionarGrupos").append(posiblesGrupos());
-        validarAddImpresora();
+        /* validarAddImpresora(); */
     });
-
-    $("input").keyup(function () {
-        validarAddImpresora();
-    });
+    /* 
+        $("input").keyup(function () {
+            validarAddImpresora();
+        }); */
 
     //crea impresora HECHO
     $("#modalAddPrinter").on("click", "button.confirmarAddImpresora", function () {
@@ -1025,7 +1048,17 @@ $(function () {
             console.log("ha entrado en no tinta");
             estado = Pmgr.PrinterStates.NO_INK;
         }
+        var obj = document.getElementById("addAlias");
 
+        if (buscarImpresoraPorAlias(obj.value) != null) {
+            obj.setCustomValidity('Escribe un alias unico');
+        } else {
+            obj.setCustomValidity('');
+        }
+
+        var objForm = document.getElementById("formAddImpresora");
+        if (objForm.checkValidity()) {
+            console.log("vale");
             console.log(idGrupos);
             console.log(idGrupos.length);
             if (idGrupos.length == 0) {
@@ -1034,8 +1067,7 @@ $(function () {
             } else {
                 let idGruposNumerico = idGrupos.map(Number);
                 Pmgr.addPrinter({ alias: nombre, model: modelo, location: localizacion, ip: ipAdd, groups: idGruposNumerico, status: estado }).then(update);
-
-            
+            }
 
             //Limpiamos valores del formulario
             $('#addIP').val("");
@@ -1043,7 +1075,14 @@ $(function () {
             $('#addModelo').val("");
             $('#addLocation').val("");
             $('#selectDeGrupos').val("");
+            objForm.classList.remove('was-validated');
+
+        } else {
+            event.preventDefault();
+            event.stopPropagation();
+            objForm.classList.add('was-validated');
         }
+
     });
 
     //crea trabajo HECHO
@@ -1051,6 +1090,7 @@ $(function () {
         let fichero = $('input[type=file]').val().split('\\').pop();
         let nombreAutor = $('#autorTrabajo').val();
         let impresora;
+        console.log(fichero);
         if ($("#checkImpresora").prop('checked')) {
             console.log("Checked impresora");
             impresora = $('#seleccionImpresoras').val();
@@ -1063,11 +1103,23 @@ $(function () {
             console.log(impresora);
         }
 
-        Pmgr.addJob({ printer: impresora, owner: nombreAutor, fileName: fichero }).then(update);
-        //Limpiar campos del formulario
-        $('#autorTrabajo').val("");
-        $('#seleccionImpresoras').val("");
-        $('#seleccionGrupos').val("");
+        var objForm = document.getElementById("formAddTrabajo");
+        if(objForm.checkValidity()){
+            Pmgr.addJob({ printer: impresora, owner: nombreAutor, fileName: fichero }).then(update);
+            //Limpiar campos del formulario
+            $('#autorTrabajo').val("");
+            $('#seleccionImpresoras').val("");
+            $('#seleccionGrupos').val("");
+            objForm.classList.remove('was-validated');/* 
+            $("#dialogosEditarImpresora").empty();
+            $('.modal-backdrop').remove(); */
+        } else{
+            event.preventDefault();
+            event.stopPropagation();
+            objForm.classList.add('was-validated');
+        }
+
+        
     });
 
     //confirma editar impresora HECHO
@@ -1118,8 +1170,17 @@ $(function () {
             }
         }); */
 
-
-        Pmgr.setPrinter({ id: impresoraEditada.id, alias: impresoraEditada.alias, model: modelo, location: localizacion, ip: ipChange, queue: impresoraEditada.queue, groups: idGruposNumerico, status: estado }).then(update);
+        var objForm = document.getElementById("formEditImpresora");
+        if(objForm.checkValidity()){
+            Pmgr.setPrinter({ id: impresoraEditada.id, alias: impresoraEditada.alias, model: modelo, location: localizacion, ip: ipChange, queue: impresoraEditada.queue, groups: idGruposNumerico, status: estado }).then(update);
+            objForm.classList.remove('was-validated');
+            $("#dialogosEditarImpresora").empty();
+            $('.modal-backdrop').remove();
+        } else{
+            event.preventDefault();
+            event.stopPropagation();
+            objForm.classList.add('was-validated');
+        }
     });
 
     //confirma editar nombre de grupo HECHO

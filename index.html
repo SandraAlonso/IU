@@ -123,18 +123,25 @@
                     </div>
                     <div class="modal-body">
 
-                        <form>
+                        <form id="formAddTrabajo" class="needs-validation" novalidate>
                             <div class="form-group">
                                 <label for="autorTrabajo">Nombre del autor</label>
-                                <input type="text" class="form-control" id="autorTrabajo">
+                                <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]+" class="form-control" id="autorTrabajo" placeholder="Pepe Pérez" required>
+                                <div class="invalid-feedback">
+                                    Escribe un nombre de autor sin caracteres especiales (@#$~[]).
+                                </div>
+                                <div class="valid-feedback">
+                                    Correcto
+                                </div>
                             </div>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile">
-                                <label class="custom-file-label" for="customFile">Elige un archivo PDF</label>
-                            </div>
+                            <div class="mb-3">
+                                <input type="file" class="form-control" pattern="([a-zA-Z0-9\s_\\.\-\(\):])+(.pdf)$" aria-label="Elige un archivo PDF" id="customFile" required>
+                                <div class="invalid-feedback">Este archivo no tiene formato valido</div>
+                              </div>
+                            <br>
                             </div>
                             <br>
-                            <p><br>Enviar a:</p>
+                            <p>Enviar a:</p>
                             <div class="form-check" id="seleccionarGrupoEImpresoraParaTrabajo">
 
 
@@ -143,7 +150,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary confirmarAddJob" data-dismiss="modal">Crear trabajo</button>
+                        <button type="submit" class="btn btn-primary confirmarAddJob" data-dismiss="modal">Crear trabajo</button>
                     </div>
                 </div>
             </div>
@@ -201,14 +208,26 @@
                     </div>
                     <div class="modal-body">
 
-                        <form id="formAddImpresora">
+                        <form id="formAddImpresora" class="needs-validation" novalidate>
                             <div class="form-group">
                                 <label for="addAlias">Alias</label>
-                                <input type="text"  pattern="[a-z]{1,15}" class="form-control" id="addAlias" placeholder="GTR3S" >
+                                <input type="text"  pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]{4,15}" class="form-control" id="addAlias" placeholder="GTR3S" required>
+                                    <div class="invalid-feedback">
+                                        Escribe un alias único de 4 a 15 caracteres no especiales(@#$~[]).
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Correcto
+                                    </div>
                             </div>
                             <div class="form-group">
                                 <label for="addModelo">Modelo</label>
-                                <input type="text" class="form-control" id="addModelo" placeholder="IBM_GTX_500" requiered>
+                                <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]+" class="form-control" id="addModelo" placeholder="IBM_GTX_500" required>
+                                <div class="invalid-feedback">
+                                    Escribe un modelo sin caracteres especiales (@#$~[]).
+                                </div>
+                                <div class="valid-feedback">
+                                    Correcto
+                                </div>
                             </div>
                             <div class="form-group" id="seleccionarGrupos">
 
@@ -216,12 +235,24 @@
 
                             <div class="form-group">
                                 <label for="addLocation">Localización</label>
-                                <input type="text" class="form-control" id="addLocation" placeholder="Cocina" requiered>
+                                <input type="text" pattern="[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ_-]+" class="form-control" id="addLocation" placeholder="Cocina" required>
+                                <div class="invalid-feedback">
+                                    Escribe una localización sin caracteres especiales (@#$~[]).
+                                </div>
+                                <div class="valid-feedback">
+                                    Correcto
+                                </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="addIP">IP</label>
-                                <input type="text" class="form-control" id="addIP" placeholder="192.168.0.13" requiered>
+                                <input type="text" pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" class="form-control" id="addIP" placeholder="192.168.0.13" required>
+                                <div class="invalid-feedback">
+                                    La IP no tiene el formato apropiado de IPv4: (xxx.xxx.xxx.xxx) donde x es un número
+                                </div>
+                                <div class="valid-feedback">
+                                    Correcto
+                                </div>
                             </div>
 
                             <div class="form-check">
