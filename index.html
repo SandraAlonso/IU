@@ -24,10 +24,7 @@
         </li>
 
     </ul>
-
-
-
-    <!--Buscador de impresoras-->
+    <!--Buscador de trabajos e impresoras-->
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="row justify-content-center">
@@ -36,7 +33,20 @@
 
                         <div class="row-md-4">
                             <h6 class="tituloBuscador">Buscar trabajo de impresión</h6>
-                            <input type="search" class="barra barraJob form-control" placeholder="Nombre de trabajo" />
+                            <div class="row">
+                                <div class="col-sm">
+                                    <input type="search" class="barra barraJob form-control" placeholder="Nombre de trabajo" />
+                                </div>
+                                <div class="col-sm">
+                                    <button id="cancelJobFilter">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            
                         </div>
                         <div class="row-md-4">
                             <select class="tablitaJob multiple form-control" multiple size="6">
@@ -47,21 +57,31 @@
                 </div>
                 <div class="col-4">
                     <div id="dropdownBuscableImpresora">
-
                         <div class="impRow row-md-4">
                             <h6 class="tituloBuscador">Buscar impresora</h6>
-                            <input type="search" class="barra barraImpresora form-control" placeholder="Nombre de impresora" />
+                            <div class="row">
+                                <div class="col-sm">
+                                    <input type="search" class="barra barraImpresora form-control" placeholder="Nombre de impresora" />
+                                </div>
+                                <div class="col-sm">
+                                    <button id="cancelPrintFilter">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="row-md-4">
                             <select class="tablitaImpresora multiple form-control" multiple size="6">
 
                             </select>
                         </div>
+                       
                     </div>
                 </div>
             </div>
-
-
 
             <!--boton anadir impresora-->
             <div data-toggle="tooltip" data-placement="top" title="Añadir impresora" id="divAnadirImp">
@@ -91,16 +111,16 @@
             <table class="table">
                 <thead class="table-primary">
                     <tr>
-                        <th scope="col" class="campo">Alias <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Estado <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Modelo <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Localización <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">IP <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Papel <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Tinta <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Trabajos <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Grupos <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Opciones </th>
+                        <th scope="col" class="campo">Alias</th>
+                        <th scope="col" class="campo">Estado</th>
+                        <th scope="col" class="campo">Modelo</th>
+                        <th scope="col" class="campo">Localización</th>
+                        <th scope="col" class="campo">IP</th>
+                        <th scope="col" class="campo">Papel</th>
+                        <th scope="col" class="campo">Tinta</th>
+                        <th scope="col" class="campo">Trabajos</th>
+                        <th scope="col" class="campo">Grupos</th>
+                        <th scope="col" class="campo">Opciones</th>
                     </tr>
                 </thead>
                 <tbody id="impresoras">
@@ -108,8 +128,6 @@
                 </tbody>
 
             </table>
-
-
 
         </div>
 
@@ -311,8 +329,19 @@
 
                         <div class="row-md-4">
                             <h6 class="tituloBuscador">Buscar grupo de impresoras</h6>
-                            <input type="search" class="barra barraGrupo form-control" placeholder="Nombre de grupo" />
+                              <div class="row">
+                                <div class="col-sm">
+                                    <input type="search" class="barra barraGrupo form-control" placeholder="Nombre de grupo" />
+                                </div>
+                                <div class="col-sm">
+                                    <button id="cancelGroupFilter"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                      </svg></button>
+                                </div>
+                            </div>
+
                         </div>
+
                         <div class="row-md-4">
                             <select class="tablitaGrupo multiple form-control" multiple size="6">
 
@@ -325,7 +354,7 @@
             <table id="grouptable" class="table">
                 <thead class="table-primary">
                     <tr>
-                        <th scope="col" class="campo">Nombre del grupo <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Nombre del grupo</th>
                         <th scope="col" class="campo">Opciones</th>
                     </tr>
                 </thead>
