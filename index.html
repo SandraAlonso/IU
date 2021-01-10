@@ -24,7 +24,10 @@
         </li>
 
     </ul>
-    <!--Tabla de impresoras-->
+
+
+
+    <!--Buscador de impresoras-->
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="row justify-content-center">
@@ -60,27 +63,6 @@
 
 
 
-            <table class="table">
-                <thead class="table-primary">
-                    <tr>
-                        <th scope="col" class="campo">Alias <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Estado <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Modelo <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Localización <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">IP <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Papel <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Tinta <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Trabajos <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Grupos <img src="img/flechita.png"></th>
-                        <th scope="col" class="campo">Opciones </th>
-                    </tr>
-                </thead>
-                <tbody id="impresoras">
-
-                </tbody>
-
-            </table>
-
             <!--boton anadir impresora-->
             <div data-toggle="tooltip" data-placement="top" title="Añadir impresora" id="divAnadirImp">
                 <button id="anadir" data-toggle="modal" data-target="#addPrinter" class="btn btn-outline-primary anadirImpresora">
@@ -104,6 +86,30 @@
                     </svg>
                 </button>
             </div>
+
+            <!--Tabla de impresoras-->
+            <table class="table">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col" class="campo">Alias <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Estado <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Modelo <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Localización <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">IP <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Papel <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Tinta <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Trabajos <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Grupos <img src="img/flechita.png"></th>
+                        <th scope="col" class="campo">Opciones </th>
+                    </tr>
+                </thead>
+                <tbody id="impresoras">
+
+                </tbody>
+
+            </table>
+
+
 
         </div>
 
