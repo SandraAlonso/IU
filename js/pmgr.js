@@ -865,14 +865,69 @@ $(function() {
                     select.append(`<option class="dropdownJob"  value="${m.id}">${m.fileName} | ${m.owner}</option>`),
                 )
             );
+
+            //mostrar trabajos filtrados
+            $("#dropdownBuscableJob select").on("change input propertychange", e => {
+                const theChosen = $("#dropdownBuscableJob select").val();
+                $("#impresoras tr").hide();
+                for (let jid of theChosen) {
+                    console.log(jid.id);
+                    const j = Pmgr.resolve(jid);
+                    let pid = "#impresoras tr[id='fila" + j.printer + "']";
+                    console.log(pid);
+                    $(pid).show();
+                }
+            });
+
+            //mostrar impresoras filtradas
+            $("#dropdownBuscableImpresora select").on("change input propertychange", e => {
+                const theChosen = $("#dropdownBuscableImpresora select").val();
+                $("#impresoras tr").hide();
+                for (let jid of theChosen) {
+                    console.log(jid);
+                    const j = Pmgr.resolve(jid);
+                    let pid = "#impresoras tr[id='fila" + j.id + "']";
+                    console.log(pid);
+                    $(pid).show();
+                }
+            });
+
+            //mostrar grupos filtrados
+            $("#dropdownBuscableGrupo select").on("change input propertychange", e => {
+                const theChosen = $("#dropdownBuscableGrupo select").val();
+                $("#tablaGrupos tr").hide();
+                for (let jid of theChosen) {
+                    console.log(jid);
+                    const j = Pmgr.resolve(jid);
+                    let pid = "#tablaGrupos tr[id='filaG" + j.id + "']";
+                    console.log(pid);
+                    $(pid).show();
+                }
+            });
+
         } else {
             console.log("Error de login");
         }
     });
 
+    // Cruces para cancelar el filtrado de tablas (buscadores)
+    $("#cancelJobFilter").click(e => {
+        $("#dropdownBuscableJob select").val([]);
+        $("#impresoras tr").show();
+    });
+    $("#cancelPrintFilter").click(e => {
+        $("#dropdownBuscableImpresora select").val([]);
+        $("#impresoras tr").show();
+    });
+    $("#cancelGroupFilter").click(e => {
+        $("#dropdownBuscableGrupo select").val([]);
+        $("#tablaGrupos tr").show();
+    });
+
+
     /* 
         Funciones de control de las impresoras
-                                                     */
+                                                */
 
     //Crea el dialogo para editar impresoras HECHO
     $("#impresoras").on("click", "button.editar", function() {
@@ -1250,4 +1305,4 @@ $(function() {
 // cosas que exponemos para usarlas desde la consola
 window.populate = populate
 window.Pmgr = Pmgr;
-//window.createPrinterItem = createPrinterItemc
+//window.createPrinterItem = createPrinterItemcco
